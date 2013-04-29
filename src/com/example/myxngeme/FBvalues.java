@@ -42,26 +42,12 @@ public class FBvalues extends Activity {
 
 						DatabaseHelper myDbHelper = new DatabaseHelper(
 								FBvalues.this);
-						try {
-
-							myDbHelper.createDataBase();
-
-						} catch (IOException ioe) {
-
-							// throw new Error("Unable to create database");
-
-						}
-
-						try {
+						
+						
 
 							myDbHelper.openDataBase();
 
-						} catch (SQLException sqle) {
-							Log.v("catch", "exeption");
-
-							throw sqle;
-
-						}
+						
 						// Toast.makeText(FBvalues.this, "Success",
 						// Toast.LENGTH_SHORT).show();
 
@@ -69,16 +55,17 @@ public class FBvalues extends Activity {
 								null, null);
 						if (c.moveToFirst()) {
 							do {
-								Log.v("id",
-										" " + c.getString(0) + "email"
-												+ c.getString(1) + "password"
-												+ c.getString(2) + "username"
-												+ c.getString(3) + "dob"
-												+ c.getString(4)
-												+ c.getString(5)
-												+ c.getString(6)
-												+ c.getString(7)
-												+ c.getString(8));
+//								Log.v("id",
+//										" " + c.getString(0) + "email"
+//												+ c.getString(1) + "password"
+//												+ c.getString(2) + "username"
+//												+ c.getString(3) + "dob"
+//												+ c.getString(4)
+//												+ c.getString(5)
+//												+ c.getString(6)
+//												+ c.getString(7)
+//												+ c.getString(8));
+								
 								// Toast.makeText(FBvalues.this,
 								// "_id: " + c.getString(0) + "\n" +
 								// "E_NAME: " + c.getString(1) + "\n" +

@@ -38,11 +38,12 @@
 
             <ImageView
                 android:id="@+id/profilepic"
-                android:layout_width="70dip"
-                android:layout_height="70dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginRight="40dip"
-                android:background="@drawable/linearpic"
-                android:src="@drawable/profile" />
+                android:src="@drawable/u"
+              
+               />
 
             <TextView
                 android:id="@+id/name"
@@ -124,8 +125,10 @@
 
                     <TextView
                         android:id="@+id/twtname"
+                        android:textSize="10dip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/twt"
                         android:layout_centerInParent="true"
                         android:text="link1" />
                 </RelativeLayout>
@@ -152,8 +155,10 @@
 
                     <TextView
                         android:id="@+id/lnname"
+                        android:textSize="10dip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/ln"
                         android:layout_centerInParent="true"
                         android:text="link2" />
                 </RelativeLayout>
@@ -180,8 +185,10 @@
 
                     <TextView
                         android:id="@+id/gplusname"
+                        android:textSize="10dip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/gplus"
                         android:layout_centerInParent="true"
                         android:text="link3" />
                 </RelativeLayout>
@@ -200,47 +207,23 @@
                     android:paddingTop="8dip" >
 
                     <ImageView
-                        android:id="@+id/gplus"
+                        android:id="@+id/fb"
                         android:layout_width="40dip"
                         android:layout_height="40dip"
                         android:layout_marginRight="40dip"
-                        android:src="@drawable/gp_icon" />
+                        android:src="@drawable/fb_icon" />
 
                     <TextView
-                        android:id="@+id/gplusname"
+                        android:id="@+id/fbname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/fb"
+                        android:textSize="10dip"
                         android:layout_centerInParent="true"
-                        android:text="link3" />
+                        android:text="https://www.facebook.com/sri.niceguy"/>
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0.5dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@drawable/linear1"
-                    android:orientation="horizontal"
-                    android:paddingBottom="8dip"
-                    android:paddingLeft="15dip"
-                    android:paddingTop="8dip" >
 
-                    <ImageView
-                        android:id="@+id/gplus"
-                        android:layout_width="40dip"
-                        android:layout_height="40dip"
-                        android:layout_marginRight="40dip"
-                        android:src="@drawable/gp_icon" />
-
-                    <TextView
-                        android:id="@+id/gplusname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="link3" />
-                </RelativeLayout>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>

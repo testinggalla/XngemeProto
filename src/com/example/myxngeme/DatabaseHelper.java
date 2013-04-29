@@ -169,4 +169,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return myDataBase.query("fblogin", null, null, null, null, null, null);
 
 	}
+	public Cursor sriram(String table, String[] columns, String selection,
+			String[] selectionArgs, String groupBy, String having,
+			String orderBy) {
+		return myDataBase.query(table, null, null, null, null, null, null);
+
+	}
+//	public Cursor upendra(String table, String[] columns, String selection,
+//			String[] selectionArgs, String groupBy, String having,
+//			String orderBy) {
+//		return myDataBase.query("upendra", null, null, null, null, null, null);
+//
+//	}
+	public Cursor query1() {
+		return myDataBase.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+
+	}
+
 }

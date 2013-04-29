@@ -5,26 +5,30 @@
     android:background="@drawable/fb_bg"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_margin="10dip"
         android:background="@drawable/fb_bg"
         android:orientation="vertical" >
+ -->
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="50dip"
+            android:layout_marginTop="10dip"
+            android:layout_marginBottom="20dip"
             android:background="#5473b3"
-            android:src="@drawable/fblabel" />
+            android:src="@drawable/facebooklogo" />
 
         <EditText
             android:id="@+id/email"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dip"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
             android:background="#ffffff"
             android:hint="email ID"
             android:paddingBottom="10dip"
@@ -35,8 +39,10 @@
             android:id="@+id/password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dip"
+            android:layout_marginBottom="20dip"
             android:background="#ffffff"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
             android:hint="Password"
             android:inputType="textPassword"
             android:paddingBottom="10dip"
@@ -48,10 +54,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#223c73"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
             android:paddingBottom="10dip"
             android:paddingTop="10dip"
             android:text="Login"
             android:textColor="@android:color/white" />
-    </LinearLayout>
 
 </LinearLayout>
