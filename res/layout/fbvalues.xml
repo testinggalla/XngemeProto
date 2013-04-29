@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fb_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="10dip"
+        android:background="@drawable/fb_bg"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dip"
+            android:background="#5473b3"
+            android:src="@drawable/fblabel" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dip"
+            android:background="#ffffff"
+            android:hint="email ID"
+            android:paddingBottom="10dip"
+            android:paddingLeft="3dip"
+            android:paddingTop="10dip" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dip"
+            android:background="#ffffff"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingBottom="10dip"
+            android:paddingLeft="3dip"
+            android:paddingTop="10dip" />
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#223c73"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:text="Login"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</LinearLayout>
