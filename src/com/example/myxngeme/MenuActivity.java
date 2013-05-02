@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.korovyansk.android.slideout.SlideoutHelper;
+import com.example.myxngeme.SlideoutHelper;
 
 public class MenuActivity extends FragmentActivity{
 
@@ -14,7 +14,7 @@ public class MenuActivity extends FragmentActivity{
 	    super.onCreate(savedInstanceState);
 	    mSlideoutHelper = new SlideoutHelper(this);
 	    mSlideoutHelper.activate();
-	    getSupportFragmentManager().beginTransaction().add(com.korovyansk.android.slideout.R.id.slideout_placeholder, new MenuFragment(), "menu").commit();
+	    getSupportFragmentManager().beginTransaction().add(com.example.myxngeme.R.id.slideout_placeholder, new MenuFragment(), "menu").commit();
 	    mSlideoutHelper.open();
 	    Log.v("oncreate","done");
 	}

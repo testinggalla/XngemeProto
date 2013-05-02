@@ -18,8 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.korovyansk.android.slideout.SlideoutActivity;
-import com.korovyansk.android.slideout.SlideoutHelper;
+import com.example.myxngeme.SlideoutActivity;
+import com.example.myxngeme.SlideoutHelper;
 
 public class Grid extends Activity {
 	ImageView send;
