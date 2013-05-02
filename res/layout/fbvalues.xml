@@ -24,6 +24,10 @@
 
         <EditText
             android:id="@+id/email"
+            android:nextFocusDown="@+id/password"
+            android:nextFocusLeft="@+id/password"
+            android:nextFocusRight="@+id/password"
+            android:nextFocusForward="@+id/password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dip"

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -31,7 +32,7 @@ import android.widget.Toast;
 
 public class Display extends Activity {
 	Button save;
-	TextView name, phone, country, email, fb, twt, gplus, ln;
+	TextView name, phone, country, email, fb, twt, gplus, ln,addnetwork;
 	String tvname, tvphone, tvcountry, tvemail, tvpic;
 	Bitmap bmp;
 	ImageView profilepic;
@@ -41,31 +42,45 @@ public class Display extends Activity {
 	String table;
 	ArrayList<String> al;
 	Bitmap myBitmap;
-	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
-	}
+	SharedPreferences.Editor ed;
+//	@Override
+//	public void onBackPressed() {
+//	    // Do nothing
+//	    return;
+//	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.display);
+		Typeface font = Typeface.createFromAsset(getAssets(), "verdana.ttf");
 		al = new ArrayList<String>();
 		DatabaseHelper myDbHelper = new DatabaseHelper(Display.this);
+		addnetwork=(TextView) findViewById(R.id.addnetwork);
+		addnetwork.setTypeface(font);
 		save = (Button) findViewById(R.id.save);
+		save.setTypeface(font);
 		name = (TextView) findViewById(R.id.name);
+		name.setTypeface(font);
 		phone = (TextView) findViewById(R.id.phone);
+		phone.setTypeface(font);
 		country = (TextView) findViewById(R.id.country);
+		country.setTypeface(font);
 		email = (TextView) findViewById(R.id.mail);
+		email.setTypeface(font);
 		profilepic = (ImageView) findViewById(R.id.profilepic);
 		fb = (TextView) findViewById(R.id.fbname);
+		fb.setTypeface(font);
 		twt = (TextView) findViewById(R.id.twtname);
+		twt.setTypeface(font);
 		ln = (TextView) findViewById(R.id.lnname);
+		ln.setTypeface(font);
 		gplus = (TextView) findViewById(R.id.gplusname);
+		gplus.setTypeface(font);
 
 		ss = getSharedPreferences("Androidsoft", 0);
+		ed = ss.edit();
 		tvname = ss.getString("username", null);
 		tvphone = ss.getString("phone", null);
 		tvcountry = ss.getString("country", null);
@@ -104,8 +119,6 @@ public class Display extends Activity {
 	    paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 	    canvas.drawBitmap(myBitmap, rect, rect, paint);
 	    profilepic.setImageBitmap(output);
-		// Typeface font = Typeface.createFromAsset(getAssets(), "verdana.ttf");
-		// name.setTypeface(font);
 		myDbHelper.openDataBase();
 		if (tvname.equals("sriram")) {
 
@@ -123,6 +136,11 @@ public class Display extends Activity {
 			twt.setText(al.get(1));
 			ln.setText(al.get(2));
 			gplus.setText(al.get(3));
+			ed.putString("fb",al.get(0));
+			ed.putString("twt",al.get(1));
+			ed.putString("ln",al.get(2));
+			ed.putString("gplus",al.get(3));
+			ed.commit();
 		} else if (tvname.equals("upendra")) {
 			c = myDbHelper.sriram(tvname, null, null, null, null, null, null);
 
@@ -138,6 +156,11 @@ public class Display extends Activity {
 			twt.setText(al.get(1));
 			ln.setText(al.get(2));
 			gplus.setText(al.get(3));
+			ed.putString("fb",al.get(0));
+			ed.putString("twt",al.get(1));
+			ed.putString("ln",al.get(2));
+			ed.putString("gplus",al.get(3));
+			ed.commit();
 		}
 		// Toast.makeText(Display.this,""+al,Toast.LENGTH_LONG).show();
 		// Log.v("al",""+al);
@@ -184,7 +207,7 @@ public class Display extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent in = new Intent(getBaseContext(), last.class);
+				Intent in = new Intent(getBaseContext(), Grid.class);
 				startActivity(in);
 			}
 		});
@@ -211,4 +234,5 @@ public class Display extends Activity {
 //
 //    return output;
 //}
+	
 }
