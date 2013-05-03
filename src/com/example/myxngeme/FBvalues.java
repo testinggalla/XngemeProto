@@ -102,6 +102,7 @@ public class FBvalues extends Activity {
 								ed.putString("profilepic",profilepic);
 								ed.commit();
 								startActivity(i);
+								finish();
 //								email.setText("");
 //								password.setText("");
 							} else {
@@ -135,6 +136,8 @@ public class FBvalues extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
+		Intent i=new Intent(getBaseContext(),MainActivity.class);
+		startActivity(i);
 		
 	}
 	protected void onResume() {

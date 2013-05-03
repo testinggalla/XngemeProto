@@ -26,6 +26,7 @@ public class Grid extends Activity {
 	Activity act;
 	EditText email;
 	SharedPreferences ss;
+	MainActivity main;
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -37,18 +38,29 @@ public class Grid extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-	}
-	protected void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
-        email.setText("");
+		main.finish();
+		finish();
 
-    }
+//		 Intent intent = new Intent(Intent.ACTION_MAIN);
+//		 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		 intent.addCategory(Intent.CATEGORY_HOME);
+//		 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		 startActivity(intent);
+	}
+
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		email.setText("");
+
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.grid);
+		main=new MainActivity();
 		Typeface font = Typeface.createFromAsset(getAssets(), "verdana.ttf");
 		ss = getSharedPreferences("Androidsoft", 0);
 		send = (ImageView) findViewById(R.id.send);
@@ -96,8 +108,9 @@ public class Grid extends Activity {
 						+ ln + "\n" + "googleplus :" + "\n" + gplus;
 				String recp = email.getText().toString();
 				Log.v("recp", "" + recp);
-//				Toast.makeText(getBaseContext(), "" + recp, Toast.LENGTH_SHORT)
-//						.show();
+				// Toast.makeText(getBaseContext(), "" + recp,
+				// Toast.LENGTH_SHORT)
+				// .show();
 				sendGmail(Grid.this, "Hello from XngeMe!", body, recp);
 			}
 		});

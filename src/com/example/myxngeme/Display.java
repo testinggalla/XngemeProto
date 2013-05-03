@@ -46,11 +46,11 @@ public class Display extends Activity {
 	SharedPreferences.Editor ed;
 	ProgressBar progressBar;
 	DatabaseHelper myDbHelper;
-//	@Override
-//	public void onBackPressed() {
-//	    // Do nothing
-//	    return;
-//	}
+	@Override
+	public void onBackPressed() {
+	    // Do nothing
+	    return;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +180,7 @@ public class Display extends Activity {
 				// TODO Auto-generated method stub
 				Intent in = new Intent(getBaseContext(), Grid.class);
 				startActivity(in);
+				finish();
 			}
 		});
 	}
