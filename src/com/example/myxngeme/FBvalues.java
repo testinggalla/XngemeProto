@@ -22,10 +22,11 @@ public class FBvalues extends Activity {
 	EditText email, password;
 	// Button login;
 	Cursor c = null;
-	String username,phno,country,emailid,profilepic;
+	String username, phno, country, emailid, profilepic;
 	int a;
 	SharedPreferences sp;
 	SharedPreferences.Editor ed;
+	Boolean bp;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,9 @@ public class FBvalues extends Activity {
 
 						DatabaseHelper myDbHelper = new DatabaseHelper(
 								FBvalues.this);
-						
-						
 
-							myDbHelper.openDataBase();
+						myDbHelper.openDataBase();
 
-						
 						// Toast.makeText(FBvalues.this, "Success",
 						// Toast.LENGTH_SHORT).show();
 
@@ -59,30 +57,13 @@ public class FBvalues extends Activity {
 								null, null);
 						if (c.moveToFirst()) {
 							do {
-//								Log.v("id",
-//										" " + c.getString(0) + "email"
-//												+ c.getString(1) + "password"
-//												+ c.getString(2) + "username"
-//												+ c.getString(3) + "dob"
-//												+ c.getString(4)
-//												+ c.getString(5)
-//												+ c.getString(6)
-//												+ c.getString(7)
-//												+ c.getString(8));
-								
-								// Toast.makeText(FBvalues.this,
-								// "_id: " + c.getString(0) + "\n" +
-								// "E_NAME: " + c.getString(1) + "\n" +
-								// "E_AGE: " + c.getString(2) + "\n" +
-								// "E_DEPT:  " + c.getString(3),
-								// Toast.LENGTH_LONG).show();
 								username = c.getString(3);
 								String passw = c.getString(2);
-								phno=c.getString(5);
-								country=c.getString(7);
-								emailid=c.getString(1);
-								profilepic=c.getString(8);
-								
+								phno = c.getString(5);
+								country = c.getString(7);
+								emailid = c.getString(1);
+								profilepic = c.getString(8);
+
 								if (email.getText().toString().equals(username)
 										&& password.getText().toString()
 												.equals(passw)) {
@@ -95,18 +76,26 @@ public class FBvalues extends Activity {
 							if (a == 0) {
 								Intent i = new Intent(getBaseContext(),
 										Display.class);
-								ed.putString("username",username);
-								ed.putString("phone",phno);
-								ed.putString("country",country);
-								ed.putString("emailid",emailid);
-								ed.putString("profilepic",profilepic);
+								ed.putString("username", username);
+								ed.putString("phone", phno);
+								ed.putString("country", country);
+								ed.putString("emailid", emailid);
+								ed.putString("profilepic", profilepic);
 								ed.commit();
 								startActivity(i);
-								finish();
-//								email.setText("");
-//								password.setText("");
-							} else {
+								bp=true;
 								
+								  SharedPreferences spf = getSharedPreferences("Sample", 0);
+
+					        		SharedPreferences.Editor se = spf.edit();
+
+					        		se.putBoolean("boolean", bp);
+					       		
+					        		//se.putString("", name.getText().toString());
+					        		se.commit();
+								finish();
+							} else {
+
 								AlertDialog.Builder alert = new AlertDialog.Builder(
 										FBvalues.this);
 
@@ -126,7 +115,7 @@ public class FBvalues extends Activity {
 								alert.show();
 							}
 						}
-
+						myDbHelper.close();
 					}
 				});
 
@@ -136,15 +125,16 @@ public class FBvalues extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-		Intent i=new Intent(getBaseContext(),MainActivity.class);
+		Intent i = new Intent(getBaseContext(), MainActivity.class);
 		startActivity(i);
-		
-	}
-	protected void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
-        password.setText("");
-        email.setText("");
 
-    }
+	}
+
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		password.setText("");
+		email.setText("");
+
+	}
 }

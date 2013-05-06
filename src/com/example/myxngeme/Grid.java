@@ -1,12 +1,21 @@
 package com.example.myxngeme;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -14,12 +23,16 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.myxngeme.SlideoutActivity;
-import com.example.myxngeme.SlideoutHelper;
 
 public class Grid extends Activity {
 	ImageView send;
@@ -33,6 +46,24 @@ public class Grid extends Activity {
 	private GestureDetector gestureDetector;
 	boolean done = false;
 	private SlideoutHelper mSlideoutHelper;
+	TextView name, phone, add;
+	ImageView profilepic, map;
+	String tvpic, tvname, tvphone;
+	Bitmap myBitmap;
+	static Grid activityA;
+	public Integer[] mThumbIds = { R.drawable.mfacebook, R.drawable.mtwitter,
+			R.drawable.mlinkedin, R.drawable.mplus, R.drawable.msky,
+			R.drawable.morkut, R.drawable.mtumblr, R.drawable.mbebo,
+			R.drawable.mfacebook, R.drawable.mtwitter, R.drawable.mlinkedin,
+			R.drawable.mplus, R.drawable.msky, R.drawable.morkut,
+			R.drawable.mtumblr, R.drawable.mbebo, R.drawable.mfacebook,
+			R.drawable.mtwitter, R.drawable.mlinkedin, R.drawable.mplus,
+			R.drawable.msky, R.drawable.morkut, R.drawable.mtumblr,
+			R.drawable.mbebo, R.drawable.mfacebook, R.drawable.mtwitter,
+			R.drawable.mlinkedin, R.drawable.mplus, R.drawable.msky,
+			R.drawable.morkut, R.drawable.mtumblr, R.drawable.mbebo, };
+	public Integer[] tags = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	@Override
 	public void onBackPressed() {
@@ -41,11 +72,11 @@ public class Grid extends Activity {
 		main.finish();
 		finish();
 
-//		 Intent intent = new Intent(Intent.ACTION_MAIN);
-//		 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		 intent.addCategory(Intent.CATEGORY_HOME);
-//		 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		 startActivity(intent);
+		// Intent intent = new Intent(Intent.ACTION_MAIN);
+		// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		// intent.addCategory(Intent.CATEGORY_HOME);
+		// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		// startActivity(intent);
 	}
 
 	protected void onResume() {
@@ -60,7 +91,8 @@ public class Grid extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.grid);
-		main=new MainActivity();
+		activityA = this;
+		main = new MainActivity();
 		Typeface font = Typeface.createFromAsset(getAssets(), "verdana.ttf");
 		ss = getSharedPreferences("Androidsoft", 0);
 		send = (ImageView) findViewById(R.id.send);
@@ -69,6 +101,14 @@ public class Grid extends Activity {
 		mSlideoutHelper = new SlideoutHelper(this);
 		gestureDetector = new GestureDetector(new MyGestureDetector());
 		View mainview = (View) findViewById(R.id.inner_content);
+		new BackgroundAsyncTask().execute();
+		// profilepic = (ImageView) findViewById(R.id.profile);
+		// map = (ImageView) findViewById(R.id.map);
+		profilepic = (ImageView) findViewById(R.id.profile);
+		name = (TextView) findViewById(R.id.name);
+		add = (TextView) findViewById(R.id.add);
+		phone = (TextView) findViewById(R.id.phone);
+		mSlideoutHelper = new SlideoutHelper(this);
 		/* for sliding */
 		// Set the touch listener for the main view to be our custom gesture
 		// listener
@@ -89,16 +129,94 @@ public class Grid extends Activity {
 
 					}
 				});
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		int w = dm.widthPixels;
+		int w1 = dm.heightPixels;
+		RelativeLayout l = (RelativeLayout) findViewById(R.id.viewlay);
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) l
+				.getLayoutParams();
+		params.height = w / 4;
+		params.width = w;
+		// RelativeLayout l1=(RelativeLayout) findViewById(R.id.two);
+		RelativeLayout l2 = (RelativeLayout) findViewById(R.id.one);
+		RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) l2
+				.getLayoutParams();
+
+		params1.width = w / 2;
+
+		l.setLayoutParams(params);
+		l2.setLayoutParams(params1);
+
+		TextView add = (TextView) findViewById(R.id.add);
+		add.setHeight(w / 8);
+		add.setWidth(w / 8);
+
+		ImageView map1 = (ImageView) findViewById(R.id.map);
+		map1.getLayoutParams().width = w / 8;
+		map1.getLayoutParams().height = w / 8;
+
+		ImageView prof = (ImageView) findViewById(R.id.profile);
+		prof.getLayoutParams().width = w / 4;
+		prof.getLayoutParams().height = w / 4;
+
+		GridView gridView = (GridView) findViewById(R.id.gridview1);
+		GridView gridView1 = (GridView) findViewById(R.id.gridview2);
+
+		// Instance of ImageAdapter Class
+		gridView.setAdapter(new ImageAdapterForGrid1(this, w));
+		gridView1.setAdapter(new ImageAdapterForGrid2(this, w));
+
+		/**
+		 * On Click event for Single Gridview Item
+		 * */
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+				ImageView i = (ImageView) v;
+				Toast.makeText(getBaseContext(), "grid " + v,
+						Toast.LENGTH_SHORT).show();
+				Log.v("Clicke", "at " + position + "--" + i.getTag());
+				if (i.getTag() == null) {
+					Log.v("View", "" + v);
+					tags[position] = 1;
+					i.setAlpha(0x66);
+					i.setTag(1);
+				} else if (i.getTag().toString().equals("1")) {
+					i.setTag(null);
+					tags[position] = 0;
+					i.setAlpha(0xff);
+				}
+
+			}
+		});
+		gridView1.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+
+				ImageView i = (ImageView) v;
+				Log.v("Clicke", "at " + position + "--" + i.getTag());
+				if (i.getTag() == null) {
+					Log.v("View", "" + v);
+					tags[position + 4] = 1;
+					i.setAlpha(0x66);
+					i.setTag(1);
+				} else if (i.getTag().toString().equals("1")) {
+					i.setTag(null);
+					tags[position + 4] = 0;
+					i.setAlpha(0xff);
+				}
+
+			}
+		});
 
 		send.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				// Intent intent = new Intent(Grid.this, MainActivity.class);
-				// startActivity(intent);
-				// overridePendingTransition(R.anim.slide_in_up, 0);
-
 				String fb = ss.getString("fb", null);
 				String twt = ss.getString("twt", null);
 				String ln = ss.getString("ln", null);
@@ -108,9 +226,6 @@ public class Grid extends Activity {
 						+ ln + "\n" + "googleplus :" + "\n" + gplus;
 				String recp = email.getText().toString();
 				Log.v("recp", "" + recp);
-				// Toast.makeText(getBaseContext(), "" + recp,
-				// Toast.LENGTH_SHORT)
-				// .show();
 				sendGmail(Grid.this, "Hello from XngeMe!", body, recp);
 			}
 		});
@@ -133,6 +248,102 @@ public class Grid extends Activity {
 		}
 	}
 
+	public class ImageAdapterForGrid1 extends BaseAdapter {
+		private Context mContext;
+
+		int l;
+		int l1;
+
+		// Keep all Images in array
+
+		// Constructor
+		public ImageAdapterForGrid1(Context c, int w) {
+
+			mContext = c;
+			l = (w / 4);
+			l1 = (w / 2);
+		}
+
+		@Override
+		public int getCount() {
+			return 4;
+
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return mThumbIds[position];
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ImageView imageView = new ImageView(mContext);
+			imageView.setImageResource(mThumbIds[position]);
+			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			imageView.setLayoutParams(new GridView.LayoutParams(l, l));
+			if (tags[position] == 0) {
+				imageView.setAlpha(0xff);
+			} else {
+				imageView.setAlpha(0x66);
+			}
+			return imageView;
+		}
+
+	}
+
+	public class ImageAdapterForGrid2 extends BaseAdapter {
+		private Context mContext;
+
+		int l;
+
+		// Keep all Images in array
+
+		// Constructor
+		public ImageAdapterForGrid2(Context c, int w) {
+
+			mContext = c;
+			l = (w / 4);
+		}
+
+		@Override
+		public int getCount() {
+			return mThumbIds.length - 4;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return mThumbIds[position + 4];
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ImageView imageView = new ImageView(mContext);
+			imageView.setImageResource(mThumbIds[position + 4]);
+			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			imageView.setLayoutParams(new GridView.LayoutParams(l, l));
+			if (tags[position + 4] == 0) {
+				imageView.setAlpha(0xff);
+			} else {
+				imageView.setAlpha(0x66);
+			}
+			return imageView;
+		}
+
+	}
+	public static Grid getInstance(){
+		Log.v("instance","called");
+		   return   activityA;
+		 }
 	/* for sliding */
 	public void init() {
 
@@ -144,6 +355,61 @@ public class Grid extends Activity {
 		startActivity(new Intent(Grid.this, MenuActivity.class));
 		Log.v("hai", "done");
 		overridePendingTransition(0, 0);
+		
+	}
+	
+	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
+		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			// TODO Auto-generated method stub
+			ss = getSharedPreferences("Androidsoft", 0);
+			tvname = ss.getString("username", null);
+			tvphone = ss.getString("phone", null);
+			tvpic = ss.getString("profilepic", null);
+
+			try {
+				URL url = new URL(tvpic);
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
+				connection.setDoInput(true);
+				connection.connect();
+				InputStream input = connection.getInputStream();
+				myBitmap = BitmapFactory.decodeStream(input);
+				Log.v("myBit", " " + myBitmap);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				Log.v("catch", "exeption");
+			}
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			name.setText(tvname);
+			phone.setText(tvphone);
+			profilepic.setImageBitmap(myBitmap);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+		}
 	}
 
 	/* for sliding */

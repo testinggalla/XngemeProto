@@ -33,7 +33,7 @@ import android.widget.TextView;
 
 public class Display extends Activity {
 	Button save;
-	TextView name, phone, country, email, fb, twt, gplus, ln,addnetwork;
+	TextView name, phone, country, email, fb, twt, gplus, ln, addnetwork;
 	String tvname, tvphone, tvcountry, tvemail, tvpic;
 	Bitmap bmp;
 	ImageView profilepic;
@@ -46,10 +46,11 @@ public class Display extends Activity {
 	SharedPreferences.Editor ed;
 	ProgressBar progressBar;
 	DatabaseHelper myDbHelper;
+
 	@Override
 	public void onBackPressed() {
-	    // Do nothing
-	    return;
+		// Do nothing
+		return;
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class Display extends Activity {
 		Typeface font = Typeface.createFromAsset(getAssets(), "verdana.ttf");
 		al = new ArrayList<String>();
 		myDbHelper = new DatabaseHelper(Display.this);
-		addnetwork=(TextView) findViewById(R.id.addnetwork);
+		addnetwork = (TextView) findViewById(R.id.addnetwork);
 		addnetwork.setTypeface(font);
 		save = (Button) findViewById(R.id.save);
 		save.setTypeface(font);
@@ -83,96 +84,6 @@ public class Display extends Activity {
 		gplus = (TextView) findViewById(R.id.gplusname);
 		gplus.setTypeface(font);
 
-//		ss = getSharedPreferences("Androidsoft", 0);
-//		ed = ss.edit();
-//		tvname = ss.getString("username", null);
-//		tvphone = ss.getString("phone", null);
-//		tvcountry = ss.getString("country", null);
-//		tvemail = ss.getString("emailid", null);
-//		tvpic = ss.getString("profilepic", null);
-		
-//		try {
-//	        URL url = new URL(tvpic);
-//	        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//	        connection.setDoInput(true);
-//	        connection.connect();
-//	        InputStream input = connection.getInputStream();
-//	       myBitmap = BitmapFactory.decodeStream(input);
-//	        Log.v("myBit"," "+myBitmap);
-//	        
-//	       
-//	    } catch (IOException e) {
-//	        e.printStackTrace();
-//	        Log.v("catch","exeption");
-//	    }
-		
-//		Bitmap output = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap
-//	            .getHeight(), Config.ARGB_8888);
-//	    Canvas canvas = new Canvas(output);
-//	
-//	    final int color = 0xff424242;
-//	    final Paint paint = new Paint();
-//	    final Rect rect = new Rect(0, 0, myBitmap.getWidth(), myBitmap.getHeight());
-//	    final RectF rectF = new RectF(rect);
-//	    final float roundPx = 10;
-//	
-//	    paint.setAntiAlias(true);
-//	    canvas.drawARGB(0, 0, 0, 0);
-//	    paint.setColor(color);
-//	    canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-//	
-//	    paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-//	    canvas.drawBitmap(myBitmap, rect, rect, paint);
-//	    profilepic.setImageBitmap(output);
-//		myDbHelper.openDataBase();
-//		if (tvname.equals("sriram")) {
-//
-//			c = myDbHelper.sriram(tvname, null, null, null, null, null, null);
-//
-//			if (c.moveToFirst()) {
-//				do {
-//					String link = c.getString(2);
-//					Log.v("links", "" + c.getString(2));
-//					al.add(c.getString(2));
-//
-//				} while (c.moveToNext());
-//			}
-//			fb.setText(al.get(0));
-//			twt.setText(al.get(1));
-//			ln.setText(al.get(2));
-//			gplus.setText(al.get(3));
-//			ed.putString("fb",al.get(0));
-//			ed.putString("twt",al.get(1));
-//			ed.putString("ln",al.get(2));
-//			ed.putString("gplus",al.get(3));
-//			ed.commit();
-//		} else if (tvname.equals("upendra")) {
-//			c = myDbHelper.sriram(tvname, null, null, null, null, null, null);
-//
-//			if (c.moveToFirst()) {
-//				do {
-//					String link = c.getString(2);
-//					Log.v("links", "" + c.getString(2));
-//					al.add(c.getString(2));
-//
-//				} while (c.moveToNext());
-//			}
-//			fb.setText(al.get(0));
-//			twt.setText(al.get(1));
-//			ln.setText(al.get(2));
-//			gplus.setText(al.get(3));
-//			ed.putString("fb",al.get(0));
-//			ed.putString("twt",al.get(1));
-//			ed.putString("ln",al.get(2));
-//			ed.putString("gplus",al.get(3));
-//			ed.commit();
-//		}
-//
-//		name.setText(tvname);
-//		phone.setText(tvphone);
-//		country.setText(tvcountry);
-//		email.setText(tvemail);
-
 		save.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -184,13 +95,14 @@ public class Display extends Activity {
 			}
 		});
 	}
+
 	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
-			Log.v("do","exe");
+			Log.v("do", "exe");
 			try {
 				ss = getSharedPreferences("Androidsoft", 0);
 				ed = ss.edit();
@@ -199,21 +111,21 @@ public class Display extends Activity {
 				tvcountry = ss.getString("country", null);
 				tvemail = ss.getString("emailid", null);
 				tvpic = ss.getString("profilepic", null);
-				Log.v("try","exe");
-				Log.v("pic","tv"+tvpic);
-		        URL url = new URL(tvpic);
-		        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		        connection.setDoInput(true);
-		        connection.connect();
-		        InputStream input = connection.getInputStream();
-		       myBitmap = BitmapFactory.decodeStream(input);
-		        Log.v("myBit"," "+myBitmap);
-		        
-		       
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		        Log.v("catch","exeption");
-		    }
+				Log.v("try", "exe");
+				Log.v("pic", "tv" + tvpic);
+				URL url = new URL(tvpic);
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
+				connection.setDoInput(true);
+				connection.connect();
+				InputStream input = connection.getInputStream();
+				myBitmap = BitmapFactory.decodeStream(input);
+				Log.v("myBit", " " + myBitmap);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				Log.v("catch", "exeption");
+			}
 			return null;
 		}
 
@@ -226,29 +138,31 @@ public class Display extends Activity {
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			Log.v("post","exe");
-			Bitmap output = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap
-		            .getHeight(), Config.ARGB_8888);
-		    Canvas canvas = new Canvas(output);
-		
-		    final int color = 0xff424242;
-		    final Paint paint = new Paint();
-		    final Rect rect = new Rect(0, 0, myBitmap.getWidth(), myBitmap.getHeight());
-		    final RectF rectF = new RectF(rect);
-		    final float roundPx = 10;
-		
-		    paint.setAntiAlias(true);
-		    canvas.drawARGB(0, 0, 0, 0);
-		    paint.setColor(color);
-		    canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-		
-		    paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-		    canvas.drawBitmap(myBitmap, rect, rect, paint);
-		    profilepic.setImageBitmap(output);
+			Log.v("post", "exe");
+			Bitmap output = Bitmap.createBitmap(myBitmap.getWidth(),
+					myBitmap.getHeight(), Config.ARGB_8888);
+			Canvas canvas = new Canvas(output);
+
+			final int color = 0xff424242;
+			final Paint paint = new Paint();
+			final Rect rect = new Rect(0, 0, myBitmap.getWidth(),
+					myBitmap.getHeight());
+			final RectF rectF = new RectF(rect);
+			final float roundPx = 10;
+
+			paint.setAntiAlias(true);
+			canvas.drawARGB(0, 0, 0, 0);
+			paint.setColor(color);
+			canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+			paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+			canvas.drawBitmap(myBitmap, rect, rect, paint);
+			profilepic.setImageBitmap(output);
 			myDbHelper.openDataBase();
 			if (tvname.equals("sriram")) {
 
-				c = myDbHelper.sriram(tvname, null, null, null, null, null, null);
+				c = myDbHelper.sriram(tvname, null, null, null, null, null,
+						null);
 
 				if (c.moveToFirst()) {
 					do {
@@ -262,13 +176,14 @@ public class Display extends Activity {
 				twt.setText(al.get(1));
 				ln.setText(al.get(2));
 				gplus.setText(al.get(3));
-				ed.putString("fb",al.get(0));
-				ed.putString("twt",al.get(1));
-				ed.putString("ln",al.get(2));
-				ed.putString("gplus",al.get(3));
+				ed.putString("fb", al.get(0));
+				ed.putString("twt", al.get(1));
+				ed.putString("ln", al.get(2));
+				ed.putString("gplus", al.get(3));
 				ed.commit();
 			} else if (tvname.equals("upendra")) {
-				c = myDbHelper.sriram(tvname, null, null, null, null, null, null);
+				c = myDbHelper.sriram(tvname, null, null, null, null, null,
+						null);
 
 				if (c.moveToFirst()) {
 					do {
@@ -282,10 +197,10 @@ public class Display extends Activity {
 				twt.setText(al.get(1));
 				ln.setText(al.get(2));
 				gplus.setText(al.get(3));
-				ed.putString("fb",al.get(0));
-				ed.putString("twt",al.get(1));
-				ed.putString("ln",al.get(2));
-				ed.putString("gplus",al.get(3));
+				ed.putString("fb", al.get(0));
+				ed.putString("twt", al.get(1));
+				ed.putString("ln", al.get(2));
+				ed.putString("gplus", al.get(3));
 				ed.commit();
 			}
 
@@ -293,7 +208,7 @@ public class Display extends Activity {
 			phone.setText(tvphone);
 			country.setText(tvcountry);
 			email.setText(tvemail);
-//			progressdialog.dismiss();
+			myDbHelper.close();
 		}
 
 		/*
@@ -305,8 +220,8 @@ public class Display extends Activity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			Log.v("pre","exe");
-			
+			Log.v("pre", "exe");
+
 		}
 	}
 }

@@ -20,11 +20,14 @@ public class ScreenShot {
 		this.view = contentView.getRootView();
 	}
 
-	/** Create snapshot handler that captures the view with target id of the activity. */
+	/**
+	 * Create snapshot handler that captures the view with target id of the
+	 * activity.
+	 */
 	public ScreenShot(Activity activity, int id) {
 		this.view = activity.findViewById(id);
 	}
-	
+
 	/** Take a snapshot of the view. */
 	public Bitmap snap() {
 		Bitmap bitmap = Bitmap.createBitmap(this.view.getWidth(),

@@ -35,7 +35,8 @@ public class SlideoutHelper {
 		Bitmap source = Bitmap.createBitmap(v1.getDrawingCache());
 		v1.setDrawingCacheEnabled(false);
 		if (statusBarHeight != 0) {
-			sCoverBitmap = Bitmap.createBitmap(source, 0, statusBarHeight, source.getWidth(), source.getHeight() - statusBarHeight);
+			sCoverBitmap = Bitmap.createBitmap(source, 0, statusBarHeight,
+					source.getWidth(), source.getHeight() - statusBarHeight);
 			source.recycle();
 		} else {
 			sCoverBitmap = source;
@@ -46,7 +47,7 @@ public class SlideoutHelper {
 	public SlideoutHelper(Activity activity) {
 		this(activity, false);
 	}
-	
+
 	public SlideoutHelper(Activity activity, boolean reverse) {
 		mActivity = activity;
 		mReverse = reverse;
@@ -60,22 +61,24 @@ public class SlideoutHelper {
 			@Override
 			public void onClick(View v) {
 				close();
-				Log.v("close","onclock ");
+				Log.v("close", "onclock ");
 			}
 		});
 		int x = (int) (sWidth * 1.2f);
 		if (mReverse) {
 			@SuppressWarnings("deprecation")
-
-
-			final android.widget.AbsoluteLayout.LayoutParams lp = new android.widget.AbsoluteLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, x, 0);
-			mActivity.findViewById(R.id.slideout_placeholder).setLayoutParams(lp);
-			Log.v("reverese","condition");
-		} else{
+			final android.widget.AbsoluteLayout.LayoutParams lp = new android.widget.AbsoluteLayout.LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, x, 0);
+			mActivity.findViewById(R.id.slideout_placeholder).setLayoutParams(
+					lp);
+			Log.v("reverese", "condition");
+		} else {
 			@SuppressWarnings("deprecation")
-			final android.widget.AbsoluteLayout.LayoutParams lp = new android.widget.AbsoluteLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 0, 0);
-			mActivity.findViewById(R.id.slideout_placeholder).setLayoutParams(lp);
-			Log.v("reverese1223","condition");
+			final android.widget.AbsoluteLayout.LayoutParams lp = new android.widget.AbsoluteLayout.LayoutParams(
+					LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 0, 0);
+			mActivity.findViewById(R.id.slideout_placeholder).setLayoutParams(
+					lp);
+			Log.v("reverese1223", "condition");
 		}
 		initAnimations();
 	}
@@ -86,25 +89,21 @@ public class SlideoutHelper {
 
 	public void close() {
 		mCover.startAnimation(mStopAnimation);
-		Log.v("close","onclock ");
+		Log.v("close", "onclock ");
 	}
 
 	protected void initAnimations() {
-		int displayWidth = ((WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
+		int displayWidth = ((WindowManager) mActivity
+				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
+				.getWidth();
 		final int shift = (mReverse ? -1 : 1) * (sWidth - displayWidth);
-		mStartAnimation = new TranslateAnimation(
-				TranslateAnimation.ABSOLUTE, 0,
-				TranslateAnimation.ABSOLUTE, -shift,
-				TranslateAnimation.ABSOLUTE, 0,
-				TranslateAnimation.ABSOLUTE, 0
-				);
+		mStartAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE,
+				0, TranslateAnimation.ABSOLUTE, -shift,
+				TranslateAnimation.ABSOLUTE, 0, TranslateAnimation.ABSOLUTE, 0);
 
-		mStopAnimation = new TranslateAnimation(
-				TranslateAnimation.ABSOLUTE, 0,
+		mStopAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE, 0,
 				TranslateAnimation.ABSOLUTE, shift,
-				TranslateAnimation.ABSOLUTE, 0,
-				TranslateAnimation.ABSOLUTE, 0
-				);
+				TranslateAnimation.ABSOLUTE, 0, TranslateAnimation.ABSOLUTE, 0);
 		mStartAnimation.setDuration(DURATION_MS);
 		mStartAnimation.setFillAfter(true);
 		mStartAnimation.setAnimationListener(new AnimationListener() {
@@ -121,7 +120,9 @@ public class SlideoutHelper {
 			public void onAnimationEnd(Animation animation) {
 				mCover.setAnimation(null);
 				@SuppressWarnings("deprecation")
-				final android.widget.AbsoluteLayout.LayoutParams lp = new android.widget.AbsoluteLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, -shift, 0);
+				final android.widget.AbsoluteLayout.LayoutParams lp = new android.widget.AbsoluteLayout.LayoutParams(
+						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT,
+						-shift, 0);
 				mCover.setLayoutParams(lp);
 			}
 		});
