@@ -49,7 +49,6 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(getBaseContext(), FBvalues.class);
-
 				startActivity(i);
 				finish();
 

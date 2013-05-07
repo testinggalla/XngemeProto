@@ -26,7 +26,6 @@ public class FBvalues extends Activity {
 	int a;
 	SharedPreferences sp;
 	SharedPreferences.Editor ed;
-	Boolean bp;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,16 +82,6 @@ public class FBvalues extends Activity {
 								ed.putString("profilepic", profilepic);
 								ed.commit();
 								startActivity(i);
-								bp=true;
-								
-								  SharedPreferences spf = getSharedPreferences("Sample", 0);
-
-					        		SharedPreferences.Editor se = spf.edit();
-
-					        		se.putBoolean("boolean", bp);
-					       		
-					        		//se.putString("", name.getText().toString());
-					        		se.commit();
 								finish();
 							} else {
 

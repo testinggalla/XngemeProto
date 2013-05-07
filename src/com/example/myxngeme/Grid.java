@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,12 +47,12 @@ public class Grid extends Activity {
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
 	boolean done = false;
+	static Grid activityA;
 	private SlideoutHelper mSlideoutHelper;
 	TextView name, phone, add;
 	ImageView profilepic, map;
 	String tvpic, tvname, tvphone;
 	Bitmap myBitmap;
-	static Grid activityA;
 	public Integer[] mThumbIds = { R.drawable.mfacebook, R.drawable.mtwitter,
 			R.drawable.mlinkedin, R.drawable.mplus, R.drawable.msky,
 			R.drawable.morkut, R.drawable.mtumblr, R.drawable.mbebo,
@@ -65,20 +67,31 @@ public class Grid extends Activity {
 	public Integer[] tags = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+//	@Override
+//	public void onBackPressed() {
+//		// TODO Auto-generated method stub
+//		super.onBackPressed();
+//		main.finish();
+//		finish();
+//
+//		// Intent intent = new Intent(Intent.ACTION_MAIN);
+//		// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		// intent.addCategory(Intent.CATEGORY_HOME);
+//		// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		// startActivity(intent);
+//	}
 	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
-		main.finish();
-		finish();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    super.onKeyDown(keyCode, event);
+        switch(keyCode)
+        {
+        case KeyEvent.KEYCODE_MENU:
+        	init();
+            return true;
+        }
 
-		// Intent intent = new Intent(Intent.ACTION_MAIN);
-		// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		// intent.addCategory(Intent.CATEGORY_HOME);
-		// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		// startActivity(intent);
-	}
-
+        return false;
+    }
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
@@ -108,6 +121,11 @@ public class Grid extends Activity {
 		name = (TextView) findViewById(R.id.name);
 		add = (TextView) findViewById(R.id.add);
 		phone = (TextView) findViewById(R.id.phone);
+		
+		Intent in=getIntent();
+		in.getStringArrayListExtra("links");
+		Toast.makeText(getBaseContext(),""+in.getStringArrayListExtra("links"),Toast.LENGTH_SHORT).show();
+		
 		mSlideoutHelper = new SlideoutHelper(this);
 		/* for sliding */
 		// Set the touch listener for the main view to be our custom gesture
@@ -340,10 +358,7 @@ public class Grid extends Activity {
 		}
 
 	}
-	public static Grid getInstance(){
-		Log.v("instance","called");
-		   return   activityA;
-		 }
+	
 	/* for sliding */
 	public void init() {
 
@@ -357,7 +372,10 @@ public class Grid extends Activity {
 		overridePendingTransition(0, 0);
 		
 	}
-	
+	public static Grid getInstance(){
+		Log.v("instance","called"); 
+		   return   activityA;
+		 }
 	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 

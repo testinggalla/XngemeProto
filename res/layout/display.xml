@@ -71,7 +71,7 @@
             <TextView
                 android:id="@+id/mail"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                 android:layout_height="wrap_content"
                 android:layout_below="@+id/country"
                 android:textColor="@android:color/black"
                 android:layout_toRightOf="@+id/profilepic"
@@ -93,142 +93,15 @@
                 android:textColor="@android:color/white" />
         </RelativeLayout>
 
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/relat" >
-
-            <LinearLayout
-                android:id="@+id/linearscroll"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0.5dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@drawable/linear1"
-                    android:orientation="horizontal"
-                    android:paddingBottom="8dip"
-                    android:paddingLeft="15dip"
-                    android:paddingTop="8dip" >
-
-                    <ImageView
-                        android:id="@+id/twt"
-                        android:layout_width="40dip"
-                        android:layout_height="40dip"
-                        android:layout_marginRight="40dip"
-                        android:src="@drawable/tw_icon" />
-
-                    <TextView
-                        android:id="@+id/twtname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_toRightOf="@+id/twt"
-                        android:textColor="@android:color/black"
-                        android:text="link1"
-                        android:textSize="10dip" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0.5dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@drawable/linear1"
-                    android:orientation="horizontal"
-                    android:paddingBottom="8dip"
-                    android:paddingLeft="15dip"
-                    android:paddingTop="8dip" >
-
-                    <ImageView
-                        android:id="@+id/ln"
-                        android:layout_width="40dip"
-                        android:layout_height="40dip"
-                        android:layout_marginRight="40dip"
-                        android:src="@drawable/ln_icon" />
-
-                    <TextView
-                        android:id="@+id/lnname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_toRightOf="@+id/ln"
-                        android:textColor="@android:color/black"
-                        android:text="link2"
-                        android:textSize="10dip" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0.5dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@drawable/linear1"
-                    android:orientation="horizontal"
-                    android:paddingBottom="8dip"
-                    android:paddingLeft="15dip"
-                    android:paddingTop="8dip" >
-
-                    <ImageView
-                        android:id="@+id/gplus"
-                        android:layout_width="40dip"
-                        android:layout_height="40dip"
-                        android:layout_marginRight="40dip"
-                        android:src="@drawable/gp_icon" />
-
-                    <TextView
-                        android:id="@+id/gplusname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_toRightOf="@+id/gplus"
-                        android:textColor="@android:color/black"
-                        android:text="link3"
-                        android:textSize="10dip" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0.5dip"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:layout_marginTop="10dip"
-                    android:background="@drawable/linear1"
-                    android:orientation="horizontal"
-                    android:paddingBottom="8dip"
-                    android:paddingLeft="15dip"
-                    android:paddingTop="8dip" >
-
-                    <ImageView
-                        android:id="@+id/fb"
-                        android:layout_width="40dip"
-                        android:layout_height="40dip"
-                        android:layout_marginRight="40dip"
-                        android:src="@drawable/fb_icon" />
-
-                    <TextView
-                        android:id="@+id/fbname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_toRightOf="@+id/fb"
-                        android:textColor="@android:color/black"
-                        android:text="https://www.facebook.com/sri.niceguy"
-                        android:textSize="10dip" />
-                </RelativeLayout>
-            </LinearLayout>
-        </ScrollView>
+       <ListView
+        android:id="@+id/list"
+        android:background="#5473b3"
+        android:layout_margin="10dip"
+        android:layout_below="@+id/relat"
+        android:dividerHeight="10dip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        
     </RelativeLayout>
 
 </LinearLayout>

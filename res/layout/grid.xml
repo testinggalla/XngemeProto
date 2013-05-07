@@ -32,7 +32,7 @@
             android:src="@drawable/xngeme_title" />
     </RelativeLayout>
 
-   <RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/relativeLayout1"
@@ -69,9 +69,10 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
                     android:gravity="center"
+                    android:paddingBottom="5dip"
                     android:text="+"
                     android:textColor="@android:color/black"
-                    android:textSize="35dip"
+                    android:textSize="30dip"
                     android:textStyle="bold" />
 
                 <ImageView
@@ -79,9 +80,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/add"
-                    android:layout_gravity="bottom"
                     android:layout_toRightOf="@+id/add"
                     android:background="@android:color/white"
+                    android:padding="5dip"
                     android:src="@drawable/map" />
 
                 <ImageView
@@ -132,37 +133,38 @@
             android:verticalSpacing="0dip" >
         </GridView>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
-        android:orientation="horizontal" >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            android:orientation="horizontal" >
 
-        <EditText
-            android:id="@+id/email1"
-            android:layout_width="250dip"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/linearpic"
-            android:hint="hey@hello.com"
-            android:inputType="textEmailAddress"
-            android:paddingBottom="2dip"
-            android:paddingLeft="2dip"
-            android:paddingTop="2dip"
-            android:singleLine="true" >
-        </EditText>
+            <EditText
+                android:id="@+id/email1"
+                android:layout_width="250dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/linearpic"
+                android:hint="hey@hello.com"
+                android:inputType="textEmailAddress"
+                android:paddingBottom="2dip"
+                android:paddingLeft="2dip"
+                android:paddingTop="2dip"
+                android:singleLine="true" >
+            </EditText>
 
-        <ImageView
-            android:id="@+id/send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@+id/email1"
-            android:src="@drawable/share" />
+            <ImageView
+                android:id="@+id/send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@+id/email1"
+                android:src="@drawable/share" />
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+
 </RelativeLayout>
