@@ -22,6 +22,7 @@ public class FBvalues extends Activity {
 	EditText email, password;
 	// Button login;
 	Cursor c = null;
+	Boolean bp;
 	String username, phno, country, emailid, profilepic;
 	int a;
 	SharedPreferences sp;
@@ -72,6 +73,7 @@ public class FBvalues extends Activity {
 								}
 								a = 1;
 							} while (c.moveToNext());
+							myDbHelper.close();
 							if (a == 0) {
 								Intent i = new Intent(getBaseContext(),
 										Display.class);
@@ -82,6 +84,16 @@ public class FBvalues extends Activity {
 								ed.putString("profilepic", profilepic);
 								ed.commit();
 								startActivity(i);
+								bp=true;
+								
+								  SharedPreferences spf = getSharedPreferences("Sample", 0);
+
+					        		SharedPreferences.Editor se = spf.edit();
+
+					        		se.putBoolean("boolean", bp);
+					       		
+					        		//se.putString("", name.getText().toString());
+					        		se.commit();
 								finish();
 							} else {
 
@@ -104,7 +116,7 @@ public class FBvalues extends Activity {
 								alert.show();
 							}
 						}
-						myDbHelper.close();
+						
 					}
 				});
 

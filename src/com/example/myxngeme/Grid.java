@@ -88,6 +88,9 @@ public class Grid extends Activity {
         case KeyEvent.KEYCODE_MENU:
         	init();
             return true;
+        case KeyEvent.KEYCODE_BACK:
+        	finish();
+            return true;
         }
 
         return false;

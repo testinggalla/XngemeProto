@@ -30,13 +30,16 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,14 +53,12 @@ public class Display extends Activity {
 	Cursor c = null;
 	int a;
 	String table;
-	ArrayList<String> al;
-	ArrayList<Integer> al1;
+	ArrayList<String> al; //links
 	Bitmap myBitmap;
 	SharedPreferences.Editor ed;
 	ProgressBar progressBar;
 	DatabaseHelper myDbHelper;
 	ListView list;
-	// ArrayAdapter<Integer> ad;
 	ArrayList<Integer> images;
 	ArrayList<String> sel_links;
 	ArrayList<Integer> posi;
@@ -93,11 +94,11 @@ public class Display extends Activity {
 		ImageView icon;
 	}
 
-//	@Override
-//	public void onBackPressed() {
-//		// Do nothing
-////		return;
-//	}
+	@Override
+	public void onBackPressed() {
+		// Do nothing
+		return;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,16 @@ public class Display extends Activity {
 		profilepic = (ImageView) findViewById(R.id.profilepic);
 		list = (ListView) findViewById(R.id.list);
 		
+//		DisplayMetrics displaymetrics = new DisplayMetrics();
+//		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+//		int height = displaymetrics.heightPixels;
+//		int wwidth = displaymetrics.widthPixels;
+//		Toast.makeText(getBaseContext(), "height "+height+"width"+wwidth, Toast.LENGTH_SHORT).show();
+//		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)list.getLayoutParams();
+//		params.setMargins(0, height/16, 0, 0); //substitute parameters for left, top, right, bottom
+//		list.getLayoutParams().height=height;
+//		list.setLayoutParams(params);
+		
 		mObjectList = new ArrayList<MyData>();
 		
 		
@@ -139,17 +150,6 @@ public class Display extends Activity {
 				R.drawable.p);
 		mIconDisabled = BitmapFactory.decodeResource(this.getResources(),
 				R.drawable.tick);
-		// al1.add(1);
-		// al1.add(2);
-		// ad=new
-		// ArrayAdapter<Integer>(getBaseContext(),android.R.layout.simple_list_item_1,al1);
-		// list.setAdapter(ad);
-		// twt = (TextView) findViewById(R.id.twtname);
-		// twt.setTypeface(font);
-		// ln = (TextView) findViewById(R.id.lnname);
-		// ln.setTypeface(font);
-		// gplus = (TextView) findViewById(R.id.gplusname);
-		// gplus.setTypeface(font);
 
 		save.setOnClickListener(new OnClickListener() {
 

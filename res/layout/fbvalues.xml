@@ -35,6 +35,7 @@
             android:layout_marginRight="20dip"
             android:background="#ffffff"
             android:hint="email ID"
+            android:inputType="textNoSuggestions"
             android:paddingBottom="10dip"
             android:paddingLeft="3dip"
             android:paddingTop="10dip" />
