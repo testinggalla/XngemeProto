@@ -67,39 +67,29 @@ public class Grid extends Activity {
 	public Integer[] tags = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-//	@Override
-//	public void onBackPressed() {
-//		// TODO Auto-generated method stub
-//		super.onBackPressed();
-//		main.finish();
-//		finish();
-//
-//		// Intent intent = new Intent(Intent.ACTION_MAIN);
-//		// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		// intent.addCategory(Intent.CATEGORY_HOME);
-//		// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//		// startActivity(intent);
-//	}
-	@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-    super.onKeyDown(keyCode, event);
-        switch(keyCode)
-        {
-        case KeyEvent.KEYCODE_MENU:
-        	init();
-            return true;
-        case KeyEvent.KEYCODE_BACK:
-        	finish();
-            return true;
-        }
+	
 
-        return false;
-    }
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		super.onKeyDown(keyCode, event);
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_MENU:
+			init();
+			return true;
+		case KeyEvent.KEYCODE_BACK:
+			Display.getInstance().finish();
+			finish();
+			
+			return true;
+		}
+
+		return false;
+	}
+
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 		email.setText("");
-
 	}
 
 	@Override
@@ -124,11 +114,26 @@ public class Grid extends Activity {
 		name = (TextView) findViewById(R.id.name);
 		add = (TextView) findViewById(R.id.add);
 		phone = (TextView) findViewById(R.id.phone);
-		
-		Intent in=getIntent();
+
+		Intent in = getIntent();
 		in.getStringArrayListExtra("links");
-		Toast.makeText(getBaseContext(),""+in.getStringArrayListExtra("links"),Toast.LENGTH_SHORT).show();
-		
+		Toast.makeText(getBaseContext(),
+				"" + in.getStringArrayListExtra("links"), Toast.LENGTH_SHORT)
+				.show();
+		add.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent i = new Intent(getBaseContext(), Display.class);
+				i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				i.setClassName(getApplicationContext(),
+						"com.example.myxngeme.Display");
+				startActivity(i);
+				finish();
+			}
+		});
+
 		mSlideoutHelper = new SlideoutHelper(this);
 		/* for sliding */
 		// Set the touch listener for the main view to be our custom gesture
@@ -361,7 +366,7 @@ public class Grid extends Activity {
 		}
 
 	}
-	
+
 	/* for sliding */
 	public void init() {
 
@@ -373,12 +378,14 @@ public class Grid extends Activity {
 		startActivity(new Intent(Grid.this, MenuActivity.class));
 		Log.v("hai", "done");
 		overridePendingTransition(0, 0);
-		
+
 	}
-	public static Grid getInstance(){
-		Log.v("instance","called"); 
-		   return   activityA;
-		 }
+
+	public static Grid getInstance() {
+		Log.v("instance", "called");
+		return activityA;
+	}
+
 	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 

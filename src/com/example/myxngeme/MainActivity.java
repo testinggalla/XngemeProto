@@ -25,12 +25,12 @@ public class MainActivity extends Activity {
 		fb.finishActivity(0);
 		dsp.finishActivity(0);
 		gd.finishActivity(0);
-		finish();
+//		finish();
 		// moveTaskToBack(true);
-		// Intent startMain = new Intent(Intent.ACTION_MAIN);
-		// startMain.addCategory(Intent.CATEGORY_HOME);
-		// startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		// startActivity(startMain);
+		 Intent startMain = new Intent(Intent.ACTION_MAIN);
+		 startMain.addCategory(Intent.CATEGORY_HOME);
+		 startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		 startActivity(startMain);
 	}
 
 	@Override

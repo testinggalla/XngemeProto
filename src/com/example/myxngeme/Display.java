@@ -65,6 +65,8 @@ public class Display extends Activity {
 	Bitmap mIconEnabled;
 	Bitmap mIconDisabled;
 	List<MyData> mObjectList;
+	
+	static Display dsp;
 	/**
 	 * Our data class. This data will be bound to MyViewHolder, which in turn is
 	 * used for the ListView.
@@ -105,6 +107,7 @@ public class Display extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.display);
+		dsp=this;
 		posi=new ArrayList<Integer>();
 		images = new ArrayList<Integer>();
 		
@@ -157,22 +160,18 @@ public class Display extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Toast.makeText(getBaseContext(), ""+posi, Toast.LENGTH_SHORT).show();
-//				Toast.makeText(getBaseContext(), ""+sel_links, Toast.LENGTH_SHORT).show();
-				
-//				for(int i=0;i<posi.size();i++) {
-//					Toast.makeText(getBaseContext(), ""+posi.get(i), Toast.LENGTH_SHORT).show();
-////					Log.v("links",""+al.get(i));
-//					
-////					Toast.makeText(getBaseContext(), ""+al.get(i), Toast.LENGTH_SHORT).show();
-//				}
-				Intent in = new Intent(getBaseContext(), Grid.class);
-				in.putStringArrayListExtra("links", sel_links);
-				startActivity(in);
-				finish();
+				Intent intent=new Intent();
+				intent.putStringArrayListExtra("links", sel_links);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				intent.setClassName(getBaseContext(),"com.example.myxngeme.Grid");
+				startActivity(intent);
 			}
 		});
 	}
-
+	public static Display getInstance(){
+		Log.v("instance","called"); 
+		   return dsp;
+		 }
 	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 
@@ -239,11 +238,7 @@ public class Display extends Activity {
 				if (c.moveToFirst()) {
 					do {
 						Log.v("links", "" + c.getString(2));
-//						mObjectList.add(new MyData("Some Text " + c.getString(2), true));
-//						Log.v("links", "" + mObjectList);
-//						al.add(new MyData("" +c.getString(2) , true));
 						al.add(c.getString(2));
-//						Log.v("al", "" + al);
 					} while (c.moveToNext());
 				}
 				// fb.setText(al.get(0));
@@ -261,11 +256,7 @@ public class Display extends Activity {
 
 				if (c.moveToFirst()) {
 					do {
-//						Log.v("links", "" + c.getString(2));
-//						mObjectList.add(new MyData("Some Text " + c.getString(2), true));
-						
 						al.add(c.getString(2));
-//						Log.v("al", "" + al);
 					} while (c.moveToNext());
 				}
 				// fb.setText(al.get(0));
@@ -374,7 +365,6 @@ public class Display extends Activity {
 						
 						al.get((Integer) icon.getTag());
 						sel_links.add(al.get((Integer) icon.getTag()));
-//						Toast.makeText(getBaseContext(), ""+al.get((Integer) icon.getTag()), Toast.LENGTH_SHORT).show();
 						Log.v("al","alfrm"+al);
 						Log.v("positins", "" + posi);
 					} else if (mo.enable == true
