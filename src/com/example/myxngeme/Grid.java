@@ -259,19 +259,29 @@ public class Grid extends Activity {
 
 	public void sendGmail(Context activity, String subject, String text,
 			String receipient) {
-		Intent gmailIntent = new Intent();
-		gmailIntent.setClassName("com.google.android.gm",
-				"com.google.android.gm.ComposeActivityGmail");
-		gmailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-		gmailIntent.putExtra(android.content.Intent.EXTRA_UID, receipient);
-		gmailIntent.putExtra(android.content.Intent.EXTRA_TEXT, text);
-		gmailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { receipient });
-		try {
-			startActivity(gmailIntent);
-			overridePendingTransition(R.anim.slide_in_up, 0);
-		} catch (ActivityNotFoundException ex) {
-			// handle error
-		}
+//		Intent gmailIntent = new Intent();
+//		gmailIntent.setClassName("com.google.android.gm",
+//				"com.google.android.gm.ComposeActivityGmail");
+//		gmailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+//		gmailIntent.putExtra(android.content.Intent.EXTRA_UID, receipient);
+//		gmailIntent.putExtra(android.content.Intent.EXTRA_TEXT, text);
+//		gmailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { receipient });
+//		try {
+//			startActivity(gmailIntent);
+//			overridePendingTransition(R.anim.slide_in_up, 0);
+//		} catch (ActivityNotFoundException ex) {
+//			// handle error
+//		}
+		
+		Intent email = new Intent(Intent.ACTION_SEND);
+		
+		email.putExtra(Intent.EXTRA_EMAIL, new String[] { receipient });		  
+		email.putExtra(Intent.EXTRA_SUBJECT, subject);
+		email.putExtra(Intent.EXTRA_TEXT, text);
+		email.setType("message/rfc822");
+		startActivity(Intent.createChooser(email, "Choose an Email client :"));
+		
+		
 	}
 
 	public class ImageAdapterForGrid1 extends BaseAdapter {
