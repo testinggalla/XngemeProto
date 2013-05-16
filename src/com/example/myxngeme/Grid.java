@@ -7,17 +7,18 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -34,11 +35,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Grid extends Activity {
 	ImageView send;
-	Activity act;
 	EditText email;
 	SharedPreferences ss;
 	MainActivity main;
@@ -53,21 +52,20 @@ public class Grid extends Activity {
 	ImageView profilepic, map;
 	String tvpic, tvname, tvphone;
 	Bitmap myBitmap;
-	public Integer[] mThumbIds = { R.drawable.mfacebook, R.drawable.mtwitter,
-			R.drawable.mlinkedin, R.drawable.mplus, R.drawable.msky,
-			R.drawable.morkut, R.drawable.mtumblr, R.drawable.mbebo,
-			R.drawable.mfacebook, R.drawable.mtwitter, R.drawable.mlinkedin,
-			R.drawable.mplus, R.drawable.msky, R.drawable.morkut,
-			R.drawable.mtumblr, R.drawable.mbebo, R.drawable.mfacebook,
-			R.drawable.mtwitter, R.drawable.mlinkedin, R.drawable.mplus,
-			R.drawable.msky, R.drawable.morkut, R.drawable.mtumblr,
-			R.drawable.mbebo, R.drawable.mfacebook, R.drawable.mtwitter,
-			R.drawable.mlinkedin, R.drawable.mplus, R.drawable.msky,
-			R.drawable.morkut, R.drawable.mtumblr, R.drawable.mbebo, };
+	Bitmap myBitmap1, myBitmap2;
+	ArrayList<String> mThumbIds;
+	ArrayList<String> links;
+	ArrayList<String> names;
+	ArrayList<String> sel_links;
+	ArrayList<String> sel_names;
+	DBxngeme dbc;
+	Cursor c;
+	GridView gridView, gridView1;
+	ProgressDialog dialog;
+	int w;
+	//tags for each image in gridview
 	public Integer[] tags = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-	
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -77,10 +75,13 @@ public class Grid extends Activity {
 			init();
 			return true;
 		case KeyEvent.KEYCODE_BACK:
+			//finishing the display class through instance
 			Display.getInstance().finish();
+			//finishing the current activity
 			finish();
-			
+
 			return true;
+
 		}
 
 		return false;
@@ -90,6 +91,7 @@ public class Grid extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		email.setText("");
+
 	}
 
 	@Override
@@ -97,8 +99,15 @@ public class Grid extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.grid);
+		dbc = new DBxngeme(this);
+		mThumbIds = new ArrayList<String>();
+		links = new ArrayList<String>();
+		names = new ArrayList<String>();
+		sel_links = new ArrayList<String>();
+		sel_names = new ArrayList<String>();
 		activityA = this;
 		main = new MainActivity();
+		//applying font for texts
 		Typeface font = Typeface.createFromAsset(getAssets(), "verdana.ttf");
 		ss = getSharedPreferences("Androidsoft", 0);
 		send = (ImageView) findViewById(R.id.send);
@@ -108,18 +117,9 @@ public class Grid extends Activity {
 		gestureDetector = new GestureDetector(new MyGestureDetector());
 		View mainview = (View) findViewById(R.id.inner_content);
 		new BackgroundAsyncTask().execute();
-		// profilepic = (ImageView) findViewById(R.id.profile);
-		// map = (ImageView) findViewById(R.id.map);
 		profilepic = (ImageView) findViewById(R.id.profile);
 		name = (TextView) findViewById(R.id.name);
 		add = (TextView) findViewById(R.id.add);
-		phone = (TextView) findViewById(R.id.phone);
-
-		Intent in = getIntent();
-		in.getStringArrayListExtra("links");
-		Toast.makeText(getBaseContext(),
-				"" + in.getStringArrayListExtra("links"), Toast.LENGTH_SHORT)
-				.show();
 		add.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -133,6 +133,28 @@ public class Grid extends Activity {
 				finish();
 			}
 		});
+		phone = (TextView) findViewById(R.id.phone);
+		//getting the images links and links from database table
+		dbc.open();
+		c = dbc.getAllContacts();
+		if (c.moveToFirst()) {
+			do {
+				mThumbIds.add(c.getString(3));
+				links.add(c.getString(1));
+			} while (c.moveToNext());
+		}
+		c.close();
+		dbc.close();
+		dbc.open();
+		//getting the images names from table
+		c = dbc.getAllContacts1();
+		if (c.moveToFirst()) {
+			do {
+				names.add(c.getString(1));
+			} while (c.moveToNext());
+		}
+		c.close();
+		dbc.close();
 
 		mSlideoutHelper = new SlideoutHelper(this);
 		/* for sliding */
@@ -155,16 +177,15 @@ public class Grid extends Activity {
 
 					}
 				});
+		//getting the screen height and width 
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		int w = dm.widthPixels;
-		int w1 = dm.heightPixels;
+		w = dm.widthPixels;
 		RelativeLayout l = (RelativeLayout) findViewById(R.id.viewlay);
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) l
 				.getLayoutParams();
 		params.height = w / 4;
 		params.width = w;
-		// RelativeLayout l1=(RelativeLayout) findViewById(R.id.two);
 		RelativeLayout l2 = (RelativeLayout) findViewById(R.id.one);
 		RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) l2
 				.getLayoutParams();
@@ -190,8 +211,8 @@ public class Grid extends Activity {
 		GridView gridView1 = (GridView) findViewById(R.id.gridview2);
 
 		// Instance of ImageAdapter Class
-		gridView.setAdapter(new ImageAdapterForGrid1(this, w));
-		gridView1.setAdapter(new ImageAdapterForGrid2(this, w));
+		gridView.setAdapter(new ImageAdapterForGrid1(Grid.this, w));
+		gridView1.setAdapter(new ImageAdapterForGrid2(Grid.this, w));
 
 		/**
 		 * On Click event for Single Gridview Item
@@ -201,17 +222,20 @@ public class Grid extends Activity {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				ImageView i = (ImageView) v;
-				Toast.makeText(getBaseContext(), "grid " + v,
-						Toast.LENGTH_SHORT).show();
-				Log.v("Clicke", "at " + position + "--" + i.getTag());
+				String s = links.get(position);
+				String name = names.get(position);
+
 				if (i.getTag() == null) {
-					Log.v("View", "" + v);
+					sel_names.add(names.get(position));
+					sel_links.add(links.get(position));
 					tags[position] = 1;
 					i.setAlpha(0x66);
 					i.setTag(1);
 				} else if (i.getTag().toString().equals("1")) {
 					i.setTag(null);
 					tags[position] = 0;
+					sel_names.remove(names.get(position));
+					sel_links.remove(links.get(position));
 					i.setAlpha(0xff);
 				}
 
@@ -223,13 +247,17 @@ public class Grid extends Activity {
 					int position, long id) {
 
 				ImageView i = (ImageView) v;
-				Log.v("Clicke", "at " + position + "--" + i.getTag());
+				String s = links.get(position + 4);
+				String name = names.get(position + 4);
 				if (i.getTag() == null) {
-					Log.v("View", "" + v);
+					sel_names.add(names.get(position + 4));
+					sel_links.add(links.get(position + 4));
 					tags[position + 4] = 1;
 					i.setAlpha(0x66);
 					i.setTag(1);
 				} else if (i.getTag().toString().equals("1")) {
+					sel_names.remove(names.get(position + 4));
+					sel_links.remove(links.get(position + 4));
 					i.setTag(null);
 					tags[position + 4] = 0;
 					i.setAlpha(0xff);
@@ -242,46 +270,39 @@ public class Grid extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				String fb = ss.getString("fb", null);
-				String twt = ss.getString("twt", null);
-				String ln = ss.getString("ln", null);
-				String gplus = ss.getString("gplus", null);
-				String body = "XngeMe" + "\n" + "facebook :" + "\n" + fb + "\n"
-						+ "twitter :" + "\n" + twt + "\n" + "linkedin :" + "\n"
-						+ ln + "\n" + "googleplus :" + "\n" + gplus;
+				// TODO Auto-generated method stubLog/
+				StringBuilder sb = new StringBuilder();
+				for (int i = 0; i < sel_links.size(); i++) {
+					sb.append(sel_names.get(i));
+					sb.append(":");
+					sb.append("\n");
+					sb.append(sel_links.get(i));
+					sb.append("\n");
+				}
+				StringBuilder sel_cat = sb;
 				String recp = email.getText().toString();
-				Log.v("recp", "" + recp);
-				sendGmail(Grid.this, "Hello from XngeMe!", body, recp);
+				sendGmail(Grid.this, "Hello from XngeMe!", "XngeMe" + "\n"
+						+ sel_cat, recp);
+
 			}
 		});
 	}
 
 	public void sendGmail(Context activity, String subject, String text,
 			String receipient) {
-//		Intent gmailIntent = new Intent();
-//		gmailIntent.setClassName("com.google.android.gm",
-//				"com.google.android.gm.ComposeActivityGmail");
-//		gmailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-//		gmailIntent.putExtra(android.content.Intent.EXTRA_UID, receipient);
-//		gmailIntent.putExtra(android.content.Intent.EXTRA_TEXT, text);
-//		gmailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { receipient });
-//		try {
-//			startActivity(gmailIntent);
-//			overridePendingTransition(R.anim.slide_in_up, 0);
-//		} catch (ActivityNotFoundException ex) {
-//			// handle error
-//		}
-		
-		Intent email = new Intent(Intent.ACTION_SEND);
-		
-		email.putExtra(Intent.EXTRA_EMAIL, new String[] { receipient });		  
-		email.putExtra(Intent.EXTRA_SUBJECT, subject);
-		email.putExtra(Intent.EXTRA_TEXT, text);
-		email.setType("message/rfc822");
-		startActivity(Intent.createChooser(email, "Choose an Email client :"));
-		
-		
+		Intent gmailIntent = new Intent();
+		gmailIntent.setClassName("com.google.android.gm",
+				"com.google.android.gm.ComposeActivityGmail");
+		gmailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+		gmailIntent.putExtra(android.content.Intent.EXTRA_UID, receipient);
+		gmailIntent.putExtra(android.content.Intent.EXTRA_TEXT, text);
+		gmailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { receipient });
+		try {
+			startActivity(gmailIntent);
+			overridePendingTransition(R.anim.slide_in_up, 0);
+		} catch (ActivityNotFoundException ex) {
+			// handle error
+		}
 	}
 
 	public class ImageAdapterForGrid1 extends BaseAdapter {
@@ -302,13 +323,17 @@ public class Grid extends Activity {
 
 		@Override
 		public int getCount() {
-			return 4;
+			if (mThumbIds.size() < 4) {
+				return mThumbIds.size();
+			} else {
+				return 4;
+			}
 
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return mThumbIds[position];
+			return mThumbIds.get(position);
 		}
 
 		@Override
@@ -319,17 +344,80 @@ public class Grid extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ImageView imageView = new ImageView(mContext);
-			imageView.setImageResource(mThumbIds[position]);
+			new BackgroundAsyncTask1(position, imageView, myBitmap1).execute();
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			imageView.setLayoutParams(new GridView.LayoutParams(l, l));
 			if (tags[position] == 0) {
+
 				imageView.setAlpha(0xff);
 			} else {
+
 				imageView.setAlpha(0x66);
 			}
 			return imageView;
 		}
 
+	}
+	//async task for loading image links 
+	class BackgroundAsyncTask1 extends AsyncTask<Void, Void, Void> {
+		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
+		int pos;
+		ImageView image;
+		Bitmap bmp;
+		ProgressDialog progressdialog;
+		public BackgroundAsyncTask1(int position, ImageView imageView,
+				Bitmap myBitmap1) {
+			pos = position;
+			image = imageView;
+			bmp = myBitmap1;
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			// TODO Auto-generated method stub
+			try {
+				URL url = new URL(mThumbIds.get(pos));
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
+				connection.setDoInput(true);
+				connection.connect();
+				InputStream input = connection.getInputStream();
+				bmp = BitmapFactory.decodeStream(input);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+
+			image.setImageBitmap(bmp);
+			progressdialog.dismiss();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			progressdialog = new ProgressDialog(Grid.this);
+			progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressdialog.setMessage("Loading...");
+			progressdialog.setCancelable(true);
+			progressdialog.show();
+		}
 	}
 
 	public class ImageAdapterForGrid2 extends BaseAdapter {
@@ -348,12 +436,13 @@ public class Grid extends Activity {
 
 		@Override
 		public int getCount() {
-			return mThumbIds.length - 4;
+
+			return mThumbIds.size() - 4;
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return mThumbIds[position + 4];
+			return mThumbIds.get(position + 4);
 		}
 
 		@Override
@@ -364,7 +453,7 @@ public class Grid extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ImageView imageView = new ImageView(mContext);
-			imageView.setImageResource(mThumbIds[position + 4]);
+			new BackgroundAsyncTask2(position, imageView, myBitmap2).execute();
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			imageView.setLayoutParams(new GridView.LayoutParams(l, l));
 			if (tags[position + 4] == 0) {
@@ -376,6 +465,69 @@ public class Grid extends Activity {
 		}
 
 	}
+	//async task for loading image links 
+	class BackgroundAsyncTask2 extends AsyncTask<Void, Void, Void> {
+		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
+		int pos;
+		ImageView image;
+		Bitmap bmp;
+
+		public BackgroundAsyncTask2(int position, ImageView imageView,
+				Bitmap myBitmap2) {
+			pos = position;
+			image = imageView;
+			bmp = myBitmap2;
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			// TODO Auto-generated method stub
+			try {
+
+				URL url = new URL(mThumbIds.get(pos + 4));
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
+				connection.setDoInput(true);
+				connection.connect();
+				InputStream input = connection.getInputStream();
+				bmp = BitmapFactory.decodeStream(input);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+
+			image.setImageBitmap(bmp);
+			// dialog.dismiss();
+
+			super.onPostExecute(result);
+
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+
+			//
+
+		}
+	}
 
 	/* for sliding */
 	public void init() {
@@ -383,19 +535,16 @@ public class Grid extends Activity {
 		int width = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP, 200, getResources()
 						.getDisplayMetrics());
-		Log.v("width", " " + width);
 		SlideoutActivity.prepare(Grid.this, R.id.inner_content, width);
 		startActivity(new Intent(Grid.this, MenuActivity.class));
-		Log.v("hai", "done");
 		overridePendingTransition(0, 0);
 
 	}
-
+	//creating statc object of current activity
 	public static Grid getInstance() {
-		Log.v("instance", "called");
 		return activityA;
 	}
-
+	//async task for loading profile pic
 	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 
@@ -415,11 +564,9 @@ public class Grid extends Activity {
 				connection.connect();
 				InputStream input = connection.getInputStream();
 				myBitmap = BitmapFactory.decodeStream(input);
-				Log.v("myBit", " " + myBitmap);
 
 			} catch (IOException e) {
 				e.printStackTrace();
-				Log.v("catch", "exeption");
 			}
 			return null;
 		}
@@ -433,9 +580,11 @@ public class Grid extends Activity {
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+
 			name.setText(tvname);
 			phone.setText(tvphone);
 			profilepic.setImageBitmap(myBitmap);
+
 		}
 
 		/*
@@ -446,7 +595,9 @@ public class Grid extends Activity {
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
+
 			super.onPreExecute();
+			// dialog = ProgressDialog.show(Grid.this, "", "Loading...");
 		}
 	}
 
@@ -485,8 +636,6 @@ public class Grid extends Activity {
 		// It is necessary to return true from onDown for the onFling event to
 		// register
 		public boolean onDown(MotionEvent e) {
-			Log.v("ondown", "done");
-
 			return true;
 		}
 

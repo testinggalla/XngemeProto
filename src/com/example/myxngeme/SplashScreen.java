@@ -11,7 +11,6 @@ import android.database.SQLException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * Splash screen activity
@@ -25,8 +24,6 @@ public class SplashScreen extends Activity {
 	// and avoid opening the next activity
 	private boolean mIsBackButtonPressed;
 	private static final int SPLASH_DURATION = 2000; // 2 seconds
-	Cursor c = null;
-	Cursor c1 = null;
 	SharedPreferences mSharedPreferences;
 	Editor e;
 	Boolean io;
@@ -60,8 +57,6 @@ public class SplashScreen extends Activity {
 			myDbHelper.openDataBase();
 
 		} catch (SQLException sqle) {
-			Log.v("catch", "exeption");
-
 			throw sqle;
 
 		}
@@ -83,8 +78,7 @@ public class SplashScreen extends Activity {
 					// start the home screen if the back button wasn't pressed
 					// already
 					if (!previouslyStarted) {
-						Log.v("first installation", " called");
-
+						// check if the app is already installed or not
 						SharedPreferences.Editor edit = prefs.edit();
 						edit.putBoolean(getString(R.string.hello_world),
 								Boolean.TRUE);
@@ -93,18 +87,16 @@ public class SplashScreen extends Activity {
 								MainActivity.class);
 						SplashScreen.this.startActivity(intent);
 						finish();
+						//
 					} else if (io == true) {
-
-						Log.v("io", " " + io);
-						Log.v("ofterlogout", " called");
-
+						// this condition is true when the app is closed without clicking on logout button
 						Intent inten = new Intent(getBaseContext(), Grid.class);
 						startActivity(inten);
 						b = 0;
 						finish();
 
 					} else if (io == false) {
-						Log.v("without logout function", "called");
+						// this condition is true when clicked on logout button.
 						Intent inten = new Intent(SplashScreen.this,
 								MainActivity.class);
 						startActivity(inten);

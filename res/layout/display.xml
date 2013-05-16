@@ -54,8 +54,8 @@
                 android:id="@+id/phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dip"
                 android:layout_below="@+id/name"
+                android:layout_marginBottom="3dip"
                 android:layout_toRightOf="@+id/profilepic"
                 android:textColor="@android:color/black" />
 
@@ -80,17 +80,16 @@
             android:id="@+id/relat"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/relative1"
-             >
+            android:layout_below="@+id/relative1" >
 
             <TextView
                 android:id="@+id/addnetwork"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dip"
-                android:textSize="12dip"
                 android:text="Would you like to add additional networks?"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="12dip" />
         </RelativeLayout>
 
         <ListView
@@ -99,9 +98,9 @@
             android:layout_height="fill_parent"
             android:layout_below="@+id/relat"
             android:layout_margin="10dip"
-            android:dividerHeight="8dip"
             android:background="#5473b3"
-            android:divider="#5473b3" />
+            android:divider="#5473b3"
+            android:dividerHeight="8dip" />
     </RelativeLayout>
 
 </LinearLayout>

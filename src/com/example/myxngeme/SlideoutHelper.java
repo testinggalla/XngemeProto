@@ -52,7 +52,7 @@ public class SlideoutHelper {
 		mActivity = activity;
 		mReverse = reverse;
 	}
-
+	// activate sliding
 	public void activate() {
 		mActivity.setContentView(R.layout.slideout);
 		mCover = (ImageView) mActivity.findViewById(R.id.slidedout_cover);
@@ -82,11 +82,11 @@ public class SlideoutHelper {
 		}
 		initAnimations();
 	}
-
+	// start animation
 	public void open() {
 		mCover.startAnimation(mStartAnimation);
 	}
-
+	// stop animation
 	public void close() {
 		mCover.startAnimation(mStopAnimation);
 		Log.v("close", "onclock ");

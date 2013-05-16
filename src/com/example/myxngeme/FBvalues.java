@@ -1,45 +1,54 @@
 package com.example.myxngeme;
 
-import java.io.IOException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class FBvalues extends Activity {
 	/** Called when the activity is first created. */
 	EditText email, password;
-	// Button login;
 	Cursor c = null;
-	Boolean bp;
 	String username, phno, country, emailid, profilepic;
 	int a;
 	SharedPreferences sp;
 	SharedPreferences.Editor ed;
+	ImageView face;
+	Boolean bp;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fbvalues);
+		face = (ImageView) findViewById(R.id.facebook);
 		email = (EditText) findViewById(R.id.email);
 		Typeface font = Typeface.createFromAsset(getAssets(), "verdana.ttf");
 		email.setTypeface(font);
 		password = (EditText) findViewById(R.id.password);
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		int height = displaymetrics.heightPixels;
+		int wwidth = displaymetrics.widthPixels;
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) face
+				.getLayoutParams();
+		params.setMargins(0, height / 6, 0, height / 16); // substitute
+															// parameters for
+															// left, top, right,
+															// bottom
+		face.setLayoutParams(params);
 		password.setTypeface(font);
 		sp = getSharedPreferences("Androidsoft", 0);
 		ed = sp.edit();
-		// login = (Button) findViewById(R.id.login);
 		((Button) findViewById(R.id.login))
 				.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -47,12 +56,9 @@ public class FBvalues extends Activity {
 
 						DatabaseHelper myDbHelper = new DatabaseHelper(
 								FBvalues.this);
-
+						// getting username and
+						// password,phno,country,emailid,pic from database
 						myDbHelper.openDataBase();
-
-						// Toast.makeText(FBvalues.this, "Success",
-						// Toast.LENGTH_SHORT).show();
-
 						c = myDbHelper.query("fblogin", null, null, null, null,
 								null, null);
 						if (c.moveToFirst()) {
@@ -63,7 +69,8 @@ public class FBvalues extends Activity {
 								country = c.getString(7);
 								emailid = c.getString(1);
 								profilepic = c.getString(8);
-
+								// comparing entered username and password equal
+								// or not
 								if (email.getText().toString().equals(username)
 										&& password.getText().toString()
 												.equals(passw)) {
@@ -73,7 +80,6 @@ public class FBvalues extends Activity {
 								}
 								a = 1;
 							} while (c.moveToNext());
-							myDbHelper.close();
 							if (a == 0) {
 								Intent i = new Intent(getBaseContext(),
 										Display.class);
@@ -84,19 +90,17 @@ public class FBvalues extends Activity {
 								ed.putString("profilepic", profilepic);
 								ed.commit();
 								startActivity(i);
-								bp=true;
-								
-								  SharedPreferences spf = getSharedPreferences("Sample", 0);
+								// sending the boolean values for login through shared preferences
+								bp = true;
 
-					        		SharedPreferences.Editor se = spf.edit();
-
-					        		se.putBoolean("boolean", bp);
-					       		
-					        		//se.putString("", name.getText().toString());
-					        		se.commit();
+								SharedPreferences spf = getSharedPreferences(
+										"Sample", 0);
+								SharedPreferences.Editor se = spf.edit();
+								se.putBoolean("boolean", bp);
+								se.commit();
 								finish();
 							} else {
-
+								// creating dialog for authentication failure
 								AlertDialog.Builder alert = new AlertDialog.Builder(
 										FBvalues.this);
 
@@ -116,7 +120,7 @@ public class FBvalues extends Activity {
 								alert.show();
 							}
 						}
-						
+						myDbHelper.close();
 					}
 				});
 

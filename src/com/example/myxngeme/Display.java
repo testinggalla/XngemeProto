@@ -7,13 +7,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.myxngeme.ClickableListAdapter;
-import com.example.myxngeme.Display;
-import com.example.myxngeme.ClickableListAdapter.ViewHolder;
-import com.example.myxngeme.Display.MyData;
-import com.example.myxngeme.Display.MyViewHolder;
-
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,37 +31,41 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.myxngeme.ClickableListAdapter.ViewHolder;
 
 public class Display extends Activity {
+
 	Button save;
-	TextView name, phone, country, email, fb, twt, gplus, ln, addnetwork,list_item;
+	TextView name, phone, country, email, addnetwork;
 	String tvname, tvphone, tvcountry, tvemail, tvpic;
-	Bitmap bmp;
 	ImageView profilepic;
 	SharedPreferences ss;
 	Cursor c = null;
-	int a;
 	String table;
-	ArrayList<String> al; //links
+	ArrayList<String> al;
 	Bitmap myBitmap;
 	SharedPreferences.Editor ed;
 	ProgressBar progressBar;
 	DatabaseHelper myDbHelper;
 	ListView list;
-	ArrayList<Integer> images;
-	ArrayList<String> sel_links;
+	ArrayList<String> images;
+	ArrayList<Integer> imagesgrid;
+	ArrayList<String> names;
 	ArrayList<Integer> posi;
 	Bitmap mIconEnabled;
 	Bitmap mIconDisabled;
 	List<MyData> mObjectList;
-	
-	static Display dsp;
+	DBxngeme dbc;
+	static Display ds;
+	ProgressBar bar;
+	int myProgress;
+	RelativeLayout re;
+
 	/**
 	 * Our data class. This data will be bound to MyViewHolder, which in turn is
 	 * used for the ListView.
@@ -106,19 +105,17 @@ public class Display extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.display);
-		dsp=this;
-		posi=new ArrayList<Integer>();
-		images = new ArrayList<Integer>();
-		
-		images.add(R.drawable.fb_icon);
-		images.add(R.drawable.tw_icon);
-		images.add(R.drawable.ln_icon);
-		images.add(R.drawable.gp_icon);
+		Log.v("on", "create");
+		ds = this;
+		dbc = new DBxngeme(this);
+		posi = new ArrayList<Integer>();
 		new BackgroundAsyncTask().execute();
+		imagesgrid = new ArrayList<Integer>();
+		names = new ArrayList<String>();
 		Typeface font = Typeface.createFromAsset(getAssets(), "verdana.ttf");
 		al = new ArrayList<String>();
-		sel_links = new ArrayList<String>();
 		myDbHelper = new DatabaseHelper(Display.this);
 		addnetwork = (TextView) findViewById(R.id.addnetwork);
 		addnetwork.setTypeface(font);
@@ -132,49 +129,83 @@ public class Display extends Activity {
 		country.setTypeface(font);
 		email = (TextView) findViewById(R.id.mail);
 		email.setTypeface(font);
+		re = (RelativeLayout) findViewById(R.id.relative1);
 		profilepic = (ImageView) findViewById(R.id.profilepic);
+		// getting the screen height and width
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		int height = displaymetrics.heightPixels;
+		int wwidth = displaymetrics.widthPixels;
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) re
+				.getLayoutParams();
+		re.getLayoutParams().width = height / 1;
+		re.getLayoutParams().height = height / 4;
+		profilepic.getLayoutParams().width = height / 6;
+		profilepic.getLayoutParams().height = height / 6;
+		params.setMargins(wwidth / 24, wwidth / 20, wwidth / 20, wwidth / 24); // substitute
+																				// parameters
+																				// for
+																				// left,
+																				// top,
+																				// right,
+																				// bottom
+		re.setLayoutParams(params);
+		RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) name
+				.getLayoutParams();
+		params1.setMargins(wwidth / 20, wwidth / 100, 0, wwidth / 30); // substitute
+																		// parameters
+																		// for
+																		// left,
+																		// top,
+																		// right,
+																		// bottom
+		name.setLayoutParams(params1);
+		RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) phone
+				.getLayoutParams();
+		params2.setMargins(wwidth / 20, 0, 0, wwidth / 30); // substitute
+															// parameters for
+															// left, top, right,
+															// bottom
+		phone.setLayoutParams(params2);
+		RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams) country
+				.getLayoutParams();
+		params4.setMargins(wwidth / 20, 0, 0, 0); // substitute parameters for
+													// left, top, right, bottom
+		phone.setLayoutParams(params2);
+		RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams) email
+				.getLayoutParams();
+		params3.setMargins(height / 6, 0, 0, 0); // substitute parameters for
+													// left, top, right, bottom
+		email.setLayoutParams(params3);
 		list = (ListView) findViewById(R.id.list);
-		
-//		DisplayMetrics displaymetrics = new DisplayMetrics();
-//		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//		int height = displaymetrics.heightPixels;
-//		int wwidth = displaymetrics.widthPixels;
-//		Toast.makeText(getBaseContext(), "height "+height+"width"+wwidth, Toast.LENGTH_SHORT).show();
-//		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)list.getLayoutParams();
-//		params.setMargins(0, height/16, 0, 0); //substitute parameters for left, top, right, bottom
-//		list.getLayoutParams().height=height;
-//		list.setLayoutParams(params);
-		
 		mObjectList = new ArrayList<MyData>();
-		
-		
 
 		mIconEnabled = BitmapFactory.decodeResource(this.getResources(),
 				R.drawable.p);
 		mIconDisabled = BitmapFactory.decodeResource(this.getResources(),
 				R.drawable.tick);
-
 		save.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(getBaseContext(), ""+posi, Toast.LENGTH_SHORT).show();
-				Intent intent=new Intent();
-				intent.putStringArrayListExtra("links", sel_links);
-				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				intent.setClassName(getBaseContext(),"com.example.myxngeme.Grid");
-				startActivity(intent);
+
+				Intent in = new Intent(getBaseContext(), Grid.class);
+				startActivity(in);
+
 			}
 		});
 	}
-	public static Display getInstance(){
-		Log.v("instance","called"); 
-		   return dsp;
-		 }
+
+	// create static object to current activity
+	public static Display getInstance() {
+		return ds;
+	}
+
+	// async task for loading links and image links
 	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
-
+		ProgressDialog progressdialog;
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
@@ -196,8 +227,8 @@ public class Display extends Activity {
 
 			} catch (IOException e) {
 				e.printStackTrace();
-				Log.v("catch", "exeption");
 			}
+
 			return null;
 		}
 
@@ -230,44 +261,33 @@ public class Display extends Activity {
 			canvas.drawBitmap(myBitmap, rect, rect, paint);
 			profilepic.setImageBitmap(output);
 			myDbHelper.openDataBase();
+			// check the username entered
 			if (tvname.equals("sriram")) {
 
 				c = myDbHelper.sriram(tvname, null, null, null, null, null,
 						null);
-
+				images = new ArrayList<String>();
 				if (c.moveToFirst()) {
 					do {
-						Log.v("links", "" + c.getString(2));
+						imagesgrid.add(c.getInt(0));
+						names.add(c.getString(1));
 						al.add(c.getString(2));
+						images.add(c.getString(3));
 					} while (c.moveToNext());
 				}
-				// fb.setText(al.get(0));
-				// twt.setText(al.get(1));
-				// ln.setText(al.get(2));
-				// gplus.setText(al.get(3));
-				ed.putString("fb", al.get(0));
-				ed.putString("twt", al.get(1));
-				ed.putString("ln", al.get(2));
-				ed.putString("gplus", al.get(3));
-				ed.commit();
 			} else if (tvname.equals("upendra")) {
 				c = myDbHelper.sriram(tvname, null, null, null, null, null,
 						null);
-
+				images = new ArrayList<String>();
 				if (c.moveToFirst()) {
 					do {
+						imagesgrid.add(c.getInt(0));
+						names.add(c.getString(1));
 						al.add(c.getString(2));
+						images.add(c.getString(3));
 					} while (c.moveToNext());
 				}
-				// fb.setText(al.get(0));
-				// twt.setText(al.get(1));
-				// ln.setText(al.get(2));
-				// gplus.setText(al.get(3));
-				ed.putString("fb", al.get(0));
-				ed.putString("twt", al.get(1));
-				ed.putString("ln", al.get(2));
-				ed.putString("gplus", al.get(3));
-				ed.commit();
+
 			}
 
 			name.setText(tvname);
@@ -276,11 +296,11 @@ public class Display extends Activity {
 			email.setText(tvemail);
 			myDbHelper.close();
 			for (int i = 0; i < al.size(); ++i) {
-				mObjectList.add(new MyData("" +al.get(i), true));
-				Log.v("mob", "" + mObjectList);
+				mObjectList.add(new MyData("" + al.get(i), true));
 			}
-			list.setAdapter(new MyClickableListAdapter(getBaseContext(), R.layout.adapter,
-					mObjectList));
+			list.setAdapter(new MyClickableListAdapter(getBaseContext(),
+					R.layout.adapter, mObjectList));
+			progressdialog.dismiss();
 		}
 
 		/*
@@ -292,7 +312,11 @@ public class Display extends Activity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-
+			progressdialog = new ProgressDialog(Display.this);
+			progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressdialog.setMessage("Loading...");
+			progressdialog.setCancelable(true);
+			progressdialog.show();
 		}
 	}
 
@@ -301,11 +325,11 @@ public class Display extends Activity {
 	 * The implementation of ClickableListAdapter
 	 */
 	private class MyClickableListAdapter extends ClickableListAdapter {
-		
+
 		public MyClickableListAdapter(Context context, int viewid,
 				List<MyData> objects) {
 			super(context, viewid, objects);
-			
+
 			// nothing to do
 		}
 
@@ -317,28 +341,25 @@ public class Display extends Activity {
 			// representatives
 			MyViewHolder mvh = (MyViewHolder) h;
 			MyData mo = (MyData) mvh.data;
+
 			mvh.icon.setImageBitmap(mo.enable ? Display.this.mIconEnabled
 					: Display.this.mIconDisabled);
-
 			mvh.text.setText(mo.text);
 			mvh.icon.setTag(position);
-			// Log.v("setting tags", ""+mvh.icon.getTag());
 
 		}
 
 		int p;
 
 		protected ViewHolder createHolder(View v, int position) {
-			
+
 			// createHolder will be called only as long, as the ListView is not
 			// filled
 			// entirely. That is, where we gain our performance:
 			// We use the relatively costly findViewById() methods and
 			// bind the view's reference to the holder objects.
 			TextView text = (TextView) v.findViewById(R.id.listitem_text);
-			ImageView img = (ImageView) v.findViewById(R.id.listitem);
-//			text.setText(""+al.get(position));
-			img.setBackgroundResource(images.get(position));
+
 			ImageView icon = (ImageView) v.findViewById(R.id.listitem_icon);
 			ViewHolder mvh = new MyViewHolder(text, icon);
 			p = position;
@@ -351,27 +372,42 @@ public class Display extends Activity {
 					mvh) {
 
 				public void onClick(View v, ViewHolder viewHolder) {
+
 					// we toggle the enabled state and also switch the icon
 					MyViewHolder mvh = (MyViewHolder) viewHolder;
 					MyData mo = (MyData) mvh.data;
-					mo.enable = !mo.enable; // toggle
-					ImageView icon = (ImageView) v;
+					mo.enable = !mo.enable;
 
+					ImageView icon = (ImageView) v;
 					icon.setImageBitmap(mo.enable ? Display.this.mIconEnabled
 							: Display.this.mIconDisabled);
-					Log.v("clicked tags", "" + icon.getTag());
-					if (mo.enable == false && (!(posi.contains(icon.getTag())))) {
+					boolean value = posi.contains(icon.getTag());
+					if (mo.enable == true) {
+						value = true;
+					} else {
+						value = false;
+					}
+					// check the condition if images are enable or not
+					if (mo.enable == false && value == false) {
 						posi.add((Integer) icon.getTag());
-						
-						al.get((Integer) icon.getTag());
-						sel_links.add(al.get((Integer) icon.getTag()));
-						Log.v("al","alfrm"+al);
-						Log.v("positins", "" + posi);
-					} else if (mo.enable == true
-							&& posi.contains(icon.getTag())) {
+
+						dbc.open();
+						dbc.insertContact(
+								(imagesgrid.get((Integer) icon.getTag())),
+								(al.get((Integer) icon.getTag())), false,
+								(images.get((Integer) icon.getTag())));
+						dbc.insertContact1(
+								(imagesgrid.get((Integer) icon.getTag())),
+								(names.get((Integer) icon.getTag())));
+						dbc.close();
+					}
+					if (mo.enable == true && value == true) {
 						posi.remove((Integer) icon.getTag());
-						sel_links.remove(al.get((Integer) icon.getTag()));
-						Log.v("positins removed", "" + posi);
+						dbc.open();
+						dbc.delete(imagesgrid.get((Integer) icon.getTag()));
+						dbc.delete1(imagesgrid.get((Integer) icon.getTag()));
+
+						dbc.close();
 					}
 
 				}

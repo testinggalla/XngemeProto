@@ -3,31 +3,26 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/linear1"
-    
-    
     android:orientation="horizontal" >
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_marginLeft="10dip"
-        android:layout_marginTop="5dip"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dip"
-        
-        >
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="5dip" >
 
         <ImageView
             android:id="@+id/listitem"
             android:layout_width="50dip"
-            android:layout_height="50dip">
+            android:layout_height="50dip" >
         </ImageView>
 
         <ImageView
             android:id="@+id/listitem_icon"
             android:layout_width="25dip"
             android:layout_height="25dip"
-            android:layout_gravity="bottom|right"
-            android:src="@drawable/p" >
+            android:layout_gravity="bottom|right" >
         </ImageView>
     </FrameLayout>
 

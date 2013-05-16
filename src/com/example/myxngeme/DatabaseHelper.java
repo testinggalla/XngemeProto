@@ -130,8 +130,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		// Open the database
 		String myPath = DB_PATH + DB_NAME;
-		// myDataBase = SQLiteDatabase.openDatabase(myPath, null,
-		// SQLiteDatabase.OPEN_READONLY);
 		myDataBase = SQLiteDatabase.openDatabase(myPath, null,
 				SQLiteDatabase.NO_LOCALIZED_COLLATORS
 						| SQLiteDatabase.CREATE_IF_NECESSARY);
@@ -169,18 +167,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return myDataBase.query("fblogin", null, null, null, null, null, null);
 
 	}
-
+//geting values from sriram table
 	public Cursor sriram(String table, String[] columns, String selection,
 			String[] selectionArgs, String groupBy, String having,
 			String orderBy) {
 		return myDataBase.query(table, null, null, null, null, null, null);
 
 	}
-
-	public Cursor query1() {
-		return myDataBase.rawQuery(
-				"SELECT name FROM sqlite_master WHERE type='table'", null);
-
-	}
-
 }

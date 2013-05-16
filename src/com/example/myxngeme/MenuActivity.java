@@ -2,11 +2,7 @@ package com.example.myxngeme;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.Toast;
-
-import com.example.myxngeme.SlideoutHelper;
 
 public class MenuActivity extends FragmentActivity {
 
@@ -19,22 +15,21 @@ public class MenuActivity extends FragmentActivity {
 				.beginTransaction()
 				.add(com.example.myxngeme.R.id.slideout_placeholder,
 						new MenuFragment(), "menu").commit();
+		//open sliding
 		mSlideoutHelper.open();
-		Log.v("oncreate", "done");
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_BACK){
-//	         Toast.makeText(MenuActivity.this, "Pressed Home Button", Toast.LENGTH_SHORT).show();
-	      	mSlideoutHelper.close();
-	      	Log.v("onkeydown","done");
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			//close sliding on click of back button
+			mSlideoutHelper.close();
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
 	public SlideoutHelper getSlideoutHelper() {
-		Log.v("slideout", "done");
 		return mSlideoutHelper;
 
 	}
