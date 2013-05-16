@@ -400,7 +400,7 @@ public class Grid extends Activity {
 			super.onPostExecute(result);
 
 			image.setImageBitmap(bmp);
-			progressdialog.dismiss();
+//			progressdialog.dismiss();
 		}
 
 		/*
@@ -412,11 +412,11 @@ public class Grid extends Activity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			progressdialog = new ProgressDialog(Grid.this);
-			progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressdialog.setMessage("Loading...");
-			progressdialog.setCancelable(true);
-			progressdialog.show();
+//			progressdialog = new ProgressDialog(Grid.this);
+//			progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//			progressdialog.setMessage("Loading...");
+//			progressdialog.setCancelable(true);
+//			progressdialog.show();
 		}
 	}
 
