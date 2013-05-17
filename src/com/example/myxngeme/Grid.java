@@ -36,6 +36,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Grid extends Activity {
 	ImageView send;
@@ -421,9 +422,24 @@ public class Grid extends Activity {
 			super.onPostExecute(result);
 
 			image.setImageBitmap(bmp);
-			if(pos==3){
-				dialog.dismiss();
-			}
+			 if (mThumbIds.size() < 4) {
+					if (mThumbIds.size() == 1){
+						if (pos == 0) {
+							dialog.dismiss();
+						}
+					}else{
+						if(pos==1){
+							dialog.dismiss();
+						}
+					}
+				} else {
+					if (pos == 3) {
+						dialog.dismiss();
+					}
+				}
+//			if(pos==3){
+//				dialog.dismiss();
+//			}
 			
 			// progressdialog.dismiss();
 		}
