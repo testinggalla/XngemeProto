@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -96,10 +97,16 @@ public class MenuFragment extends Fragment {
 				se.putBoolean("boolean", bp);
 				se.putInt("a", a);
 				se.commit();
+				Boolean check=spf.getBoolean("df",false);
 				getActivity().finish();
 				// finishing the grid,display activties
 				Grid.getInstance().finish();
+				if(check==true) {
 				Display.getInstance().finish();
+				}
+				else {
+				
+				}
 			}
 
 		});

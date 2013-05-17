@@ -12,10 +12,8 @@ public class DBxngeme {
 	public static final String KEY_IMG = "img";
 	public static final String DATA_NAME = "MYDB";
 	public static final String DATA_TABLE = "MR";
-	public static final String DATA_TABLE1 = "RM";
-	public static final int DATA_VERSION = 1;
-	public static final String DATA_CREATE = "create table MR(id integer primary key ,links String,enable boolean,img String)";
-	public static final String DATA_CREATE1 = "create table RM(id integer primary key , name String)";
+	public static final int DATA_VERSION = 5;
+	public static final String DATA_CREATE = "create table MR(id integer primary key ,links String,enable boolean,img String,name String)";
 	private final Context con;
 	private DatabaseHelper dhelp;
 	private SQLiteDatabase db;
@@ -37,7 +35,6 @@ public class DBxngeme {
 		public void onCreate(SQLiteDatabase db) {
 			// TODO Auto-generated method stub
 			db.execSQL(DATA_CREATE);
-			db.execSQL(DATA_CREATE1);
 
 		}
 
@@ -46,7 +43,6 @@ public class DBxngeme {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			// TODO Auto-generated method stub
 			db.execSQL("DROP TABLE IF EXISTS MR");
-			db.execSQL("DROP TABLE IF EXISTS RM");
 			onCreate(db);
 		}
 
@@ -64,45 +60,26 @@ public class DBxngeme {
 	}
 
 	// inserting values in to MR table
-	public long insertContact(int id, String links, Boolean enable, String img) {
+	public long insertContact(int id, String links, Boolean enable, String img,
+			String name) {
 		ContentValues invalue = new ContentValues();
 		invalue.put("id", id);
 		invalue.put("links", links);
 		invalue.put("img", img);
 		invalue.put("enable", enable);
-		return db.insert(DATA_TABLE, null, invalue);
-	}
-
-	// inserting values in to RM table
-	public long insertContact1(int id, String name) {
-		ContentValues invalue = new ContentValues();
-		invalue.put("id", id);
 		invalue.put("name", name);
-
-		return db.insert(DATA_TABLE1, null, invalue);
+		return db.insert(DATA_TABLE, null, invalue);
 	}
 
 	// geting all contacts from MR table
 	public Cursor getAllContacts() {
 		return db.query(DATA_TABLE, new String[] { "id", "links", "enable",
-				"img" }, null, null, null, null, null);
-	}
-
-	// getting all contacts from RM table
-	public Cursor getAllContacts1() {
-		return db.query(DATA_TABLE1, new String[] { "id", "name" }, null, null,
-				null, null, null);
+				"img", "name" }, null, null, null, null, null);
 	}
 
 	// deleting no.of rows from MR table
 	public void delete(long rowid) {
 		db.delete(DATA_TABLE, "id=" + rowid, null);
-
-	}
-
-	// deleting no. of rows from RM table
-	public void delete1(long rowid) {
-		db.delete(DATA_TABLE1, "id=" + rowid, null);
 
 	}
 

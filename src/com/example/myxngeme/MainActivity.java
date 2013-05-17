@@ -2,6 +2,8 @@ package com.example.myxngeme;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -12,18 +14,14 @@ import android.widget.LinearLayout;
 public class MainActivity extends Activity {
 	ImageView login;
 	LinearLayout line;
-	FBvalues fb;
-	Display dsp;
-	Grid gd;
+	Boolean df = false;
 
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-		fb.finishActivity(0);
-		dsp.finishActivity(0);
-		gd.finishActivity(0);
-		//finishing the current activity 
+		// finishing the current activity
+		Display.getInstance().finish();
 		finish();
 
 	}
@@ -32,12 +30,14 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		df = true;
+		SharedPreferences spf = getSharedPreferences("Sample", 0);
+		SharedPreferences.Editor se = spf.edit();
+		se.putBoolean("df", df);
+		se.commit();
 		login = (ImageView) findViewById(R.id.fblogin);
 		line = (LinearLayout) findViewById(R.id.linear);
 		line.getBackground().setAlpha(50);
-		fb = new FBvalues();
-		dsp = new Display();
-		gd = new Grid();
 		login.setOnClickListener(new OnClickListener() {
 
 			@Override

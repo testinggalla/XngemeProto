@@ -77,11 +77,17 @@ public class Grid extends Activity {
 			init();
 			return true;
 		case KeyEvent.KEYCODE_BACK:
-			// finishing the display class through instance
+			SharedPreferences spf = getSharedPreferences(
+					"Sample", 0);
+			Boolean check=spf.getBoolean("df",false);
+			if(check==true) {
 			Display.getInstance().finish();
-			// finishing the current activity
+			}
+			else {
+			
+			}
+			//finishing the current activity
 			finish();
-
 			return true;
 
 		}
@@ -116,7 +122,7 @@ public class Grid extends Activity {
 		email = (EditText) findViewById(R.id.email1);
 		email.setTypeface(font);
 		mSlideoutHelper = new SlideoutHelper(this);
-		gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureDetector = new GestureDetector(getBaseContext(),new MyGestureDetector());
 		View mainview = (View) findViewById(R.id.inner_content);
 		new BackgroundAsyncTask().execute();
 		profilepic = (ImageView) findViewById(R.id.profile);
@@ -143,20 +149,12 @@ public class Grid extends Activity {
 			do {
 				mThumbIds.add(c.getString(3));
 				links.add(c.getString(1));
+				names.add(c.getString(4));
 			} while (c.moveToNext());
 		}
 		c.close();
 		dbc.close();
-		dbc.open();
-		// getting the images names from table
-		c = dbc.getAllContacts1();
-		if (c.moveToFirst()) {
-			do {
-				names.add(c.getString(1));
-			} while (c.moveToNext());
-		}
-		c.close();
-		dbc.close();
+		
 
 		mSlideoutHelper = new SlideoutHelper(this);
 		/* for sliding */

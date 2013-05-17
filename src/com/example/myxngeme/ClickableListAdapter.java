@@ -123,28 +123,16 @@ public abstract class ClickableListAdapter extends BaseAdapter {
 		ss = context.getSharedPreferences("Androidsoft", 0);
 		ed = ss.edit();
 		String tvname = ss.getString("username", null);
-		if (tvname.equals("sriram")) {
+		c = myDbHelper.sriram(tvname, null, null, null, null, null, null);
 
-			c = myDbHelper.sriram(tvname, null, null, null, null, null, null);
+		if (c.moveToFirst()) {
+			do {
 
-			if (c.moveToFirst()) {
-				do {
-
-					al_img.add(c.getString(3));
-				} while (c.moveToNext());
-			}
-
-		} else if (tvname.equals("upendra")) {
-			c = myDbHelper.sriram(tvname, null, null, null, null, null, null);
-
-			if (c.moveToFirst()) {
-				do {
-					al_img.add(c.getString(3));
-				} while (c.moveToNext());
-			}
-
+				al_img.add(c.getString(3));
+			} while (c.moveToNext());
 		}
 
+		
 		c.close();
 		myDbHelper.close();
 

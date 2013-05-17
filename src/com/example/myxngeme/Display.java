@@ -206,7 +206,6 @@ public class Display extends Activity {
 	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 		ProgressDialog progressdialog;
-
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
@@ -263,45 +262,34 @@ public class Display extends Activity {
 			profilepic.setImageBitmap(output);
 			myDbHelper.openDataBase();
 			// check the username entered
-//			if (tvname.equals("sriram")) {
-//
-//				c = myDbHelper.sriram(tvname, null, null, null, null, null,
-//						null);
-//				images = new ArrayList<String>();
-//				if (c.moveToFirst()) {
-//					do {
-//						imagesgrid.add(c.getInt(0));
-//						names.add(c.getString(1));
-//						al.add(c.getString(2));
-//						images.add(c.getString(3));
-//					} while (c.moveToNext());
-//				}
-//			} else if (tvname.equals("upendra")) {
-//				c = myDbHelper.sriram(tvname, null, null, null, null, null,
-//						null);
-//				images = new ArrayList<String>();
-//				if (c.moveToFirst()) {
-//					do {
-//						imagesgrid.add(c.getInt(0));
-//						names.add(c.getString(1));
-//						al.add(c.getString(2));
-//						images.add(c.getString(3));
-//					} while (c.moveToNext());
-//				}
-//
-//			}
-			c = myDbHelper.sriram(tvname, null, null, null, null, null,
-					null);
-			images = new ArrayList<String>();
-			if (c.moveToFirst()) {
-				do {
-					imagesgrid.add(c.getInt(0));
-					names.add(c.getString(1));
-					al.add(c.getString(2));
-					images.add(c.getString(3));
-				} while (c.moveToNext());
+			if (tvname.equals("sriram")) {
+
+				c = myDbHelper.sriram(tvname, null, null, null, null, null,
+						null);
+				images = new ArrayList<String>();
+				if (c.moveToFirst()) {
+					do {
+						imagesgrid.add(c.getInt(0));
+						names.add(c.getString(1));
+						al.add(c.getString(2));
+						images.add(c.getString(3));
+					} while (c.moveToNext());
+				}
+			} else if (tvname.equals("upendra")) {
+				c = myDbHelper.sriram(tvname, null, null, null, null, null,
+						null);
+				images = new ArrayList<String>();
+				if (c.moveToFirst()) {
+					do {
+						imagesgrid.add(c.getInt(0));
+						names.add(c.getString(1));
+						al.add(c.getString(2));
+						images.add(c.getString(3));
+					} while (c.moveToNext());
+				}
+
 			}
-			
+
 			name.setText(tvname);
 			phone.setText(tvphone);
 			country.setText(tvcountry);
@@ -327,7 +315,7 @@ public class Display extends Activity {
 			progressdialog = new ProgressDialog(Display.this);
 			progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 			progressdialog.setMessage("Loading...");
-			progressdialog.setCancelable(false);
+			progressdialog.setCancelable(true);
 			progressdialog.show();
 		}
 	}
@@ -407,17 +395,13 @@ public class Display extends Activity {
 						dbc.insertContact(
 								(imagesgrid.get((Integer) icon.getTag())),
 								(al.get((Integer) icon.getTag())), false,
-								(images.get((Integer) icon.getTag())));
-						dbc.insertContact1(
-								(imagesgrid.get((Integer) icon.getTag())),
-								(names.get((Integer) icon.getTag())));
+								(images.get((Integer) icon.getTag())),(names.get((Integer) icon.getTag())));
 						dbc.close();
 					}
 					if (mo.enable == true && value == true) {
 						posi.remove((Integer) icon.getTag());
 						dbc.open();
 						dbc.delete(imagesgrid.get((Integer) icon.getTag()));
-						dbc.delete1(imagesgrid.get((Integer) icon.getTag()));
 
 						dbc.close();
 					}
