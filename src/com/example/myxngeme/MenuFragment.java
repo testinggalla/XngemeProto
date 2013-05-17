@@ -49,30 +49,30 @@ public class MenuFragment extends Fragment {
 				.getMetrics(displaymetrics);
 		int height = displaymetrics.heightPixels;
 		int wwidth = displaymetrics.widthPixels;
-		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) logout
-				.getLayoutParams();
-		params.setMargins(height / 14, height / 14, 0, 0); // substitute
-															// parameters for
-															// left, top, right,
-															// bottom
-		logout.setLayoutParams(params);
-		LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) settings
-				.getLayoutParams();
-		params1.setMargins(height / 14, height / 14, 0, 0); // substitute
-															// parameters for
-															// left, top, right,
-															// bottom
-		settings.setLayoutParams(params1);
-		LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) settext
-				.getLayoutParams();
-		params2.setMargins(height / 14, 0, 0, 0); // substitute parameters for
-													// left, top, right, bottom
-		settext.setLayoutParams(params2);
-		LinearLayout.LayoutParams params3 = (LinearLayout.LayoutParams) logtext
-				.getLayoutParams();
-		params3.setMargins(height / 14, 0, 0, 0); // substitute parameters for
-													// left, top, right, bottom
-		logtext.setLayoutParams(params3);
+		 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) logout
+					.getLayoutParams();
+			params.setMargins(height / 20, height / 14, 0, 0); // substitute
+																// parameters for
+																// left, top, right,
+																// bottom
+			logout.setLayoutParams(params);
+			LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) settings
+					.getLayoutParams();
+			params1.setMargins(height / 20, height / 14, 0, 0); // substitute
+																// parameters for
+																// left, top, right,
+																// bottom
+			settings.setLayoutParams(params1);
+			LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) settext
+					.getLayoutParams();
+			params2.setMargins(height / 20, height/50, 0, 0); // substitute parameters for
+														// left, top, right, bottom
+			settext.setLayoutParams(params2);
+			LinearLayout.LayoutParams params3 = (LinearLayout.LayoutParams) logtext
+					.getLayoutParams();
+			params3.setMargins(height / 16, height/50, 0, 0); // substitute parameters for
+														// left, top, right, bottom
+			logtext.setLayoutParams(params3);
 		logout.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v)

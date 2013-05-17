@@ -81,7 +81,8 @@ public class Grid extends Activity {
 			SharedPreferences spf = getSharedPreferences(
 					"Sample", 0);
 			Boolean check=spf.getBoolean("df",false);
-			if(check==true) {
+			Boolean check1=spf.getBoolean("dff",false);
+			if(check==true || check1==true) {
 			Display.getInstance().finish();
 			}
 			else {
@@ -576,15 +577,16 @@ public class Grid extends Activity {
 
 	/* for sliding */
 	public void init() {
-		DisplayMetrics dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		w = dm.widthPixels;
 		int width = (int) TypedValue.applyDimension(
-				TypedValue.COMPLEX_UNIT_PX,3*w/4, getResources()
+				TypedValue.COMPLEX_UNIT_PX,(w-(w/3)), getResources()
 						.getDisplayMetrics());
+		Log.v("ww2"," "+(w-(w/3)));
+		Log.v("ww"," "+(w-(w-(w/4))-(3*(w/8))));
 		SlideoutActivity.prepare(Grid.this, R.id.inner_content, width);
 		startActivity(new Intent(Grid.this, MenuActivity.class));
 		overridePendingTransition(0, 0);
+
+
 
 	}
 

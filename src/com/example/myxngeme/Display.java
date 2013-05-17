@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -35,6 +37,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myxngeme.ClickableListAdapter.ViewHolder;
 
@@ -107,6 +110,14 @@ public class Display extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.display);
+
+		SharedPreferences spf = getSharedPreferences("Sample", 0);
+
+		SharedPreferences.Editor se = spf.edit();
+
+		se.putBoolean("dff", true);
+		se.commit();
+
 		Log.v("on", "create");
 		ds = this;
 		dbc = new DBxngeme(this);
@@ -189,10 +200,31 @@ public class Display extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				dbc.open();
+				c = dbc.getAllContacts();
 
-				Intent in = new Intent(getBaseContext(), Grid.class);
-				startActivity(in);
+				if (c.getCount() == 0) {
 
+					AlertDialog.Builder alert = new AlertDialog.Builder(
+							Display.this);
+
+					alert.setTitle("Error");
+					alert.setMessage("Please select atleast one link");
+
+					alert.setPositiveButton("ok",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									dialog.dismiss();
+
+								}
+							});
+
+					alert.show();
+				} else {
+					Intent in = new Intent(getBaseContext(), Grid.class);
+					startActivity(in);
+				}
 			}
 		});
 	}
@@ -206,6 +238,7 @@ public class Display extends Activity {
 	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 		ProgressDialog progressdialog;
+
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
@@ -262,33 +295,18 @@ public class Display extends Activity {
 			profilepic.setImageBitmap(output);
 			myDbHelper.openDataBase();
 			// check the username entered
-			if (tvname.equals("sriram")) {
-
-				c = myDbHelper.sriram(tvname, null, null, null, null, null,
-						null);
-				images = new ArrayList<String>();
-				if (c.moveToFirst()) {
-					do {
-						imagesgrid.add(c.getInt(0));
-						names.add(c.getString(1));
-						al.add(c.getString(2));
-						images.add(c.getString(3));
-					} while (c.moveToNext());
-				}
-			} else if (tvname.equals("upendra")) {
-				c = myDbHelper.sriram(tvname, null, null, null, null, null,
-						null);
-				images = new ArrayList<String>();
-				if (c.moveToFirst()) {
-					do {
-						imagesgrid.add(c.getInt(0));
-						names.add(c.getString(1));
-						al.add(c.getString(2));
-						images.add(c.getString(3));
-					} while (c.moveToNext());
-				}
-
+			c = myDbHelper.sriram(tvname, null, null, null, null, null,
+					null);
+			images = new ArrayList<String>();
+			if (c.moveToFirst()) {
+				do {
+					imagesgrid.add(c.getInt(0));
+					names.add(c.getString(1));
+					al.add(c.getString(2));
+					images.add(c.getString(3));
+				} while (c.moveToNext());
 			}
+
 
 			name.setText(tvname);
 			phone.setText(tvphone);
@@ -395,7 +413,8 @@ public class Display extends Activity {
 						dbc.insertContact(
 								(imagesgrid.get((Integer) icon.getTag())),
 								(al.get((Integer) icon.getTag())), false,
-								(images.get((Integer) icon.getTag())),(names.get((Integer) icon.getTag())));
+								(images.get((Integer) icon.getTag())),
+								(names.get((Integer) icon.getTag())));
 						dbc.close();
 					}
 					if (mo.enable == true && value == true) {

@@ -29,6 +29,7 @@ public class SplashScreen extends Activity {
 	Boolean io;
 	int b;
 Boolean df=true;
+Boolean dff=true;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashscr);
@@ -36,10 +37,11 @@ Boolean df=true;
 				.getDefaultSharedPreferences(getBaseContext());
 		final boolean previouslyStarted = prefs.getBoolean(
 				getString(R.string.hello_world), false);
-df=false;
+df=false;dff=false;
 		SharedPreferences spf = getSharedPreferences("Sample", 0);
 		SharedPreferences.Editor se = spf.edit();
 		se.putBoolean("df", df);
+		se.putBoolean("dff", dff);
 		se.commit();
 		io = spf.getBoolean("boolean", false);
 		b = spf.getInt("a", 0);
