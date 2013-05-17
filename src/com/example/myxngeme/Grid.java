@@ -19,6 +19,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -63,7 +64,8 @@ public class Grid extends Activity {
 	GridView gridView, gridView1;
 	ProgressDialog dialog;
 	int w;
-	//tags for each image in gridview
+
+	// tags for each image in gridview
 	public Integer[] tags = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -75,9 +77,9 @@ public class Grid extends Activity {
 			init();
 			return true;
 		case KeyEvent.KEYCODE_BACK:
-			//finishing the display class through instance
+			// finishing the display class through instance
 			Display.getInstance().finish();
-			//finishing the current activity
+			// finishing the current activity
 			finish();
 
 			return true;
@@ -107,7 +109,7 @@ public class Grid extends Activity {
 		sel_names = new ArrayList<String>();
 		activityA = this;
 		main = new MainActivity();
-		//applying font for texts
+		// applying font for texts
 		Typeface font = Typeface.createFromAsset(getAssets(), "verdana.ttf");
 		ss = getSharedPreferences("Androidsoft", 0);
 		send = (ImageView) findViewById(R.id.send);
@@ -134,7 +136,7 @@ public class Grid extends Activity {
 			}
 		});
 		phone = (TextView) findViewById(R.id.phone);
-		//getting the images links and links from database table
+		// getting the images links and links from database table
 		dbc.open();
 		c = dbc.getAllContacts();
 		if (c.moveToFirst()) {
@@ -146,7 +148,7 @@ public class Grid extends Activity {
 		c.close();
 		dbc.close();
 		dbc.open();
-		//getting the images names from table
+		// getting the images names from table
 		c = dbc.getAllContacts1();
 		if (c.moveToFirst()) {
 			do {
@@ -177,7 +179,7 @@ public class Grid extends Activity {
 
 					}
 				});
-		//getting the screen height and width 
+		// getting the screen height and width
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		w = dm.widthPixels;
@@ -207,87 +209,99 @@ public class Grid extends Activity {
 		prof.getLayoutParams().width = w / 4;
 		prof.getLayoutParams().height = w / 4;
 
-		GridView gridView = (GridView) findViewById(R.id.gridview1);
-		GridView gridView1 = (GridView) findViewById(R.id.gridview2);
-
-		// Instance of ImageAdapter Class
-		gridView.setAdapter(new ImageAdapterForGrid1(Grid.this, w));
-		gridView1.setAdapter(new ImageAdapterForGrid2(Grid.this, w));
-
-		/**
-		 * On Click event for Single Gridview Item
-		 * */
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				ImageView i = (ImageView) v;
-				String s = links.get(position);
-				String name = names.get(position);
-
-				if (i.getTag() == null) {
-					sel_names.add(names.get(position));
-					sel_links.add(links.get(position));
-					tags[position] = 1;
-					i.setAlpha(0x66);
-					i.setTag(1);
-				} else if (i.getTag().toString().equals("1")) {
-					i.setTag(null);
-					tags[position] = 0;
-					sel_names.remove(names.get(position));
-					sel_links.remove(links.get(position));
-					i.setAlpha(0xff);
-				}
-
-			}
-		});
-		gridView1.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-
-				ImageView i = (ImageView) v;
-				String s = links.get(position + 4);
-				String name = names.get(position + 4);
-				if (i.getTag() == null) {
-					sel_names.add(names.get(position + 4));
-					sel_links.add(links.get(position + 4));
-					tags[position + 4] = 1;
-					i.setAlpha(0x66);
-					i.setTag(1);
-				} else if (i.getTag().toString().equals("1")) {
-					sel_names.remove(names.get(position + 4));
-					sel_links.remove(links.get(position + 4));
-					i.setTag(null);
-					tags[position + 4] = 0;
-					i.setAlpha(0xff);
-				}
-
-			}
-		});
-
-		send.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stubLog/
-				StringBuilder sb = new StringBuilder();
-				for (int i = 0; i < sel_links.size(); i++) {
-					sb.append(sel_names.get(i));
-					sb.append(":");
-					sb.append("\n");
-					sb.append(sel_links.get(i));
-					sb.append("\n");
-				}
-				StringBuilder sel_cat = sb;
-				String recp = email.getText().toString();
-				sendGmail(Grid.this, "Hello from XngeMe!", "XngeMe" + "\n"
-						+ sel_cat, recp);
-
-			}
-		});
+		gridView = (GridView) findViewById(R.id.gridview1);
+		gridView1 = (GridView) findViewById(R.id.gridview2);
+		
+		progress();
+		
+//		gridView.setAdapter(new ImageAdapterForGrid1(Grid.this, w));
+//		gridView1.setAdapter(new ImageAdapterForGrid2(Grid.this, w));
+//
+//		/**
+//		 * On Click event for Single Gridview Item
+//		 * */
+//		gridView.setOnItemClickListener(new OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View v,
+//					int position, long id) {
+//				ImageView i = (ImageView) v;
+//				String s = links.get(position);
+//				String name = names.get(position);
+//
+//				if (i.getTag() == null) {
+//					sel_names.add(names.get(position));
+//					sel_links.add(links.get(position));
+//					tags[position] = 1;
+//					i.setAlpha(0x66);
+//					i.setTag(1);
+//				} else if (i.getTag().toString().equals("1")) {
+//					i.setTag(null);
+//					tags[position] = 0;
+//					sel_names.remove(names.get(position));
+//					sel_links.remove(links.get(position));
+//					i.setAlpha(0xff);
+//				}
+//
+//			}
+//		});
+//		gridView1.setOnItemClickListener(new OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View v,
+//					int position, long id) {
+//
+//				ImageView i = (ImageView) v;
+//				String s = links.get(position + 4);
+//				String name = names.get(position + 4);
+//				if (i.getTag() == null) {
+//					sel_names.add(names.get(position + 4));
+//					sel_links.add(links.get(position + 4));
+//					tags[position + 4] = 1;
+//					i.setAlpha(0x66);
+//					i.setTag(1);
+//				} else if (i.getTag().toString().equals("1")) {
+//					sel_names.remove(names.get(position + 4));
+//					sel_links.remove(links.get(position + 4));
+//					i.setTag(null);
+//					tags[position + 4] = 0;
+//					i.setAlpha(0xff);
+//				}
+//
+//			}
+//		});
+//
+//		send.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stubLog/
+//				StringBuilder sb = new StringBuilder();
+//				for (int i = 0; i < sel_links.size(); i++) {
+//					sb.append(sel_names.get(i));
+//					sb.append(":");
+//					sb.append("\n");
+//					sb.append(sel_links.get(i));
+//					sb.append("\n");
+//				}
+//				StringBuilder sel_cat = sb;
+//				String recp = email.getText().toString();
+//				sendGmail(Grid.this, "Hello from XngeMe!", "XngeMe" + "\n"
+//						+ sel_cat, recp);
+//
+//			}
+//		});
 	}
-
+	/*
+	 * ******************************************************************************************************************************************
+	 * */
+	private void progress() {
+		// TODO Auto-generated method stub
+		
+//		dialog = ProgressDialog.show(Grid.this, "", "Loading from server...");
+//		dialog.setCancelable(false);
+	}
+	/*
+	 * ******************************************************************************************************************************************
+	 * */
 	public void sendGmail(Context activity, String subject, String text,
 			String receipient) {
 		Intent gmailIntent = new Intent();
@@ -354,17 +368,26 @@ public class Grid extends Activity {
 
 				imageView.setAlpha(0x66);
 			}
+//			if(mThumbIds.size()<=4&&position==3){
+//				Log.e("Upendra", "true");
+//				dialog.dismiss();
+////				dialog.dismiss();
+//			}else{
+//				Log.e("Upendra", "false"+position);
+//			}
 			return imageView;
 		}
 
 	}
-	//async task for loading image links 
+
+	// async task for loading image links
 	class BackgroundAsyncTask1 extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 		int pos;
 		ImageView image;
 		Bitmap bmp;
 		ProgressDialog progressdialog;
+
 		public BackgroundAsyncTask1(int position, ImageView imageView,
 				Bitmap myBitmap1) {
 			pos = position;
@@ -400,7 +423,11 @@ public class Grid extends Activity {
 			super.onPostExecute(result);
 
 			image.setImageBitmap(bmp);
-//			progressdialog.dismiss();
+			if(pos==3){
+				dialog.dismiss();
+			}
+			
+			// progressdialog.dismiss();
 		}
 
 		/*
@@ -412,11 +439,11 @@ public class Grid extends Activity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-//			progressdialog = new ProgressDialog(Grid.this);
-//			progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//			progressdialog.setMessage("Loading...");
-//			progressdialog.setCancelable(true);
-//			progressdialog.show();
+			// progressdialog = new ProgressDialog(Grid.this);
+			// progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			// progressdialog.setMessage("Loading...");
+			// progressdialog.setCancelable(true);
+			// progressdialog.show();
 		}
 	}
 
@@ -461,11 +488,15 @@ public class Grid extends Activity {
 			} else {
 				imageView.setAlpha(0x66);
 			}
+//			if(position==3){
+//				dialog.dismiss();
+//			}
 			return imageView;
 		}
 
 	}
-	//async task for loading image links 
+
+	// async task for loading image links
 	class BackgroundAsyncTask2 extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 		int pos;
@@ -540,11 +571,13 @@ public class Grid extends Activity {
 		overridePendingTransition(0, 0);
 
 	}
-	//creating statc object of current activity
+
+	// creating statc object of current activity
 	public static Grid getInstance() {
 		return activityA;
 	}
-	//async task for loading profile pic
+
+	// async task for loading profile pic
 	public class BackgroundAsyncTask extends AsyncTask<Void, Void, Void> {
 		public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 
@@ -584,6 +617,86 @@ public class Grid extends Activity {
 			name.setText(tvname);
 			phone.setText(tvphone);
 			profilepic.setImageBitmap(myBitmap);
+			 dialog.dismiss();
+			 dialog = ProgressDialog.show(Grid.this, "", "Loading from server...");
+				dialog.setCancelable(false);
+				gridView.setAdapter(new ImageAdapterForGrid1(Grid.this, w));
+				gridView1.setAdapter(new ImageAdapterForGrid2(Grid.this, w));
+
+				/**
+				 * On Click event for Single Gridview Item
+				 * */
+				gridView.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View v,
+							int position, long id) {
+						ImageView i = (ImageView) v;
+						String s = links.get(position);
+						String name = names.get(position);
+
+						if (i.getTag() == null) {
+							sel_names.add(names.get(position));
+							sel_links.add(links.get(position));
+							tags[position] = 1;
+							i.setAlpha(0x66);
+							i.setTag(1);
+						} else if (i.getTag().toString().equals("1")) {
+							i.setTag(null);
+							tags[position] = 0;
+							sel_names.remove(names.get(position));
+							sel_links.remove(links.get(position));
+							i.setAlpha(0xff);
+						}
+
+					}
+				});
+				gridView1.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View v,
+							int position, long id) {
+
+						ImageView i = (ImageView) v;
+						String s = links.get(position + 4);
+						String name = names.get(position + 4);
+						if (i.getTag() == null) {
+							sel_names.add(names.get(position + 4));
+							sel_links.add(links.get(position + 4));
+							tags[position + 4] = 1;
+							i.setAlpha(0x66);
+							i.setTag(1);
+						} else if (i.getTag().toString().equals("1")) {
+							sel_names.remove(names.get(position + 4));
+							sel_links.remove(links.get(position + 4));
+							i.setTag(null);
+							tags[position + 4] = 0;
+							i.setAlpha(0xff);
+						}
+
+					}
+				});
+
+				send.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stubLog/
+						StringBuilder sb = new StringBuilder();
+						for (int i = 0; i < sel_links.size(); i++) {
+							sb.append(sel_names.get(i));
+							sb.append(":");
+							sb.append("\n");
+							sb.append(sel_links.get(i));
+							sb.append("\n");
+						}
+						StringBuilder sel_cat = sb;
+						String recp = email.getText().toString();
+						sendGmail(Grid.this, "Hello from XngeMe!", "XngeMe" + "\n"
+								+ sel_cat, recp);
+
+					}
+				});
+		
+			//new setGrids().execute();
 
 		}
 
@@ -597,7 +710,8 @@ public class Grid extends Activity {
 			// TODO Auto-generated method stub
 
 			super.onPreExecute();
-			// dialog = ProgressDialog.show(Grid.this, "", "Loading...");
+			dialog = ProgressDialog.show(Grid.this, "", "Loading Profile picture...");
+			dialog.setCancelable(false);
 		}
 	}
 

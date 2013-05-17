@@ -20,11 +20,11 @@ public class MainActivity extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-//		fb.finishActivity(0);
-//		dsp.finishActivity(0);
-//		gd.finishActivity(0);
-//		//finishing the current activity 
-//		finish();
+		fb.finishActivity(0);
+		dsp.finishActivity(0);
+		gd.finishActivity(0);
+		//finishing the current activity 
+		finish();
 
 	}
 
@@ -35,9 +35,9 @@ public class MainActivity extends Activity {
 		login = (ImageView) findViewById(R.id.fblogin);
 		line = (LinearLayout) findViewById(R.id.linear);
 		line.getBackground().setAlpha(50);
-//		fb = new FBvalues();
-//		dsp = new Display();
-//		gd = new Grid();
+		fb = new FBvalues();
+		dsp = new Display();
+		gd = new Grid();
 		login.setOnClickListener(new OnClickListener() {
 
 			@Override
