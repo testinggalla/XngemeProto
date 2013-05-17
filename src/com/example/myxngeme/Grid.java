@@ -576,9 +576,11 @@ public class Grid extends Activity {
 
 	/* for sliding */
 	public void init() {
-
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+		w = dm.widthPixels;
 		int width = (int) TypedValue.applyDimension(
-				TypedValue.COMPLEX_UNIT_DIP,w-(w/4), getResources()
+				TypedValue.COMPLEX_UNIT_PX,3*w/4, getResources()
 						.getDisplayMetrics());
 		SlideoutActivity.prepare(Grid.this, R.id.inner_content, width);
 		startActivity(new Intent(Grid.this, MenuActivity.class));
