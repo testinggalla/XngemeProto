@@ -133,7 +133,7 @@
             android:verticalSpacing="0dip" >
         </GridView>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="50dip"
             android:layout_alignParentBottom="true"
@@ -142,16 +142,18 @@
 
             <EditText
                 android:id="@+id/email1"
-                android:layout_width="250dip"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/linearpic"
+                 android:layout_weight="1" 
                 android:hint="hey@hello.com"
                 android:inputType="textEmailAddress"
                 android:paddingBottom="2dip"
                 android:paddingLeft="2dip"
+               
                 android:paddingTop="2dip"
                 android:singleLine="true" >
             </EditText>
@@ -160,11 +162,10 @@
                 android:id="@+id/send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
+                 android:layout_gravity="center"
                 android:layout_toRightOf="@+id/email1"
                 android:src="@drawable/share" />
-        </RelativeLayout>
-    </RelativeLayout>
+</LinearLayout>
+            </RelativeLayout>
 
 </RelativeLayout>

@@ -38,7 +38,6 @@ public class FBvalues extends Activity {
 		DisplayMetrics displaymetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 		int height = displaymetrics.heightPixels;
-		int wwidth = displaymetrics.widthPixels;
 		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) face
 				.getLayoutParams();
 		params.setMargins(0, height / 6, 0, height / 16); // substitute

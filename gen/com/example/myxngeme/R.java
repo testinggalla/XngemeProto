@@ -17,25 +17,24 @@ public final class R {
     public static final class drawable {
         public static final int facebooklogo=0x7f020000;
         public static final int fb_bg=0x7f020001;
-        public static final int fb_icon=0x7f020002;
-        public static final int fblogin=0x7f020003;
-        public static final int gray=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
-        public static final int linear1=0x7f020006;
-        public static final int linearpic=0x7f020007;
-        public static final int logout_image=0x7f020008;
-        public static final int map=0x7f020009;
-        public static final int p=0x7f02000a;
-        public static final int resized2=0x7f02000b;
-        public static final int save=0x7f02000c;
-        public static final int settings_silver=0x7f02000d;
-        public static final int share=0x7f02000e;
-        public static final int sptextimage=0x7f02000f;
-        public static final int tick=0x7f020010;
-        public static final int xngeme_bg=0x7f020011;
-        public static final int xngeme_logo_web=0x7f020012;
-        public static final int xngeme_title=0x7f020013;
-        public static final int xpic=0x7f020014;
+        public static final int fblogin=0x7f020002;
+        public static final int gray=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
+        public static final int linear1=0x7f020005;
+        public static final int linearpic=0x7f020006;
+        public static final int logout_image=0x7f020007;
+        public static final int map=0x7f020008;
+        public static final int p=0x7f020009;
+        public static final int resized2=0x7f02000a;
+        public static final int save=0x7f02000b;
+        public static final int settings_silver=0x7f02000c;
+        public static final int share=0x7f02000d;
+        public static final int sptextimage=0x7f02000e;
+        public static final int tick=0x7f02000f;
+        public static final int xngeme_bg=0x7f020010;
+        public static final int xngeme_logo_web=0x7f020011;
+        public static final int xngeme_title=0x7f020012;
+        public static final int xpic=0x7f020013;
     }
     public static final class id {
         public static final int add=0x7f080019;

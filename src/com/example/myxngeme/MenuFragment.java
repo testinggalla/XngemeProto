@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,31 +47,32 @@ public class MenuFragment extends Fragment {
 		getActivity().getWindowManager().getDefaultDisplay()
 				.getMetrics(displaymetrics);
 		int height = displaymetrics.heightPixels;
-		int wwidth = displaymetrics.widthPixels;
-		 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) logout
-					.getLayoutParams();
-			params.setMargins(height / 20, height / 14, 0, 0); // substitute
-																// parameters for
-																// left, top, right,
-																// bottom
-			logout.setLayoutParams(params);
-			LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) settings
-					.getLayoutParams();
-			params1.setMargins(height / 20, height / 14, 0, 0); // substitute
-																// parameters for
-																// left, top, right,
-																// bottom
-			settings.setLayoutParams(params1);
-			LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) settext
-					.getLayoutParams();
-			params2.setMargins(height / 20, height/50, 0, 0); // substitute parameters for
-														// left, top, right, bottom
-			settext.setLayoutParams(params2);
-			LinearLayout.LayoutParams params3 = (LinearLayout.LayoutParams) logtext
-					.getLayoutParams();
-			params3.setMargins(height / 16, height/50, 0, 0); // substitute parameters for
-														// left, top, right, bottom
-			logtext.setLayoutParams(params3);
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) logout
+				.getLayoutParams();
+		params.setMargins(height / 20, height / 14, 0, 0); // substitute
+															// parameters for
+															// left, top, right,
+															// bottom
+		logout.setLayoutParams(params);
+		LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) settings
+				.getLayoutParams();
+		params1.setMargins(height / 20, height / 14, 0, 0); // substitute
+															// parameters for
+															// left, top, right,
+															// bottom
+		settings.setLayoutParams(params1);
+		LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) settext
+				.getLayoutParams();
+		params2.setMargins(height / 20, height / 50, 0, 0); // substitute
+															// parameters for
+		// left, top, right, bottom
+		settext.setLayoutParams(params2);
+		LinearLayout.LayoutParams params3 = (LinearLayout.LayoutParams) logtext
+				.getLayoutParams();
+		params3.setMargins(height / 16, height / 50, 0, 0); // substitute
+															// parameters for
+		// left, top, right, bottom
+		logtext.setLayoutParams(params3);
 		logout.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v)
@@ -97,15 +97,17 @@ public class MenuFragment extends Fragment {
 				se.putBoolean("boolean", bp);
 				se.putInt("a", a);
 				se.commit();
-				Boolean check=spf.getBoolean("df",false);
+				Boolean check = spf.getBoolean("df", false);
+
+				Boolean check1 = spf.getBoolean("dff", false);
+
 				getActivity().finish();
 				// finishing the grid,display activties
 				Grid.getInstance().finish();
-				if(check==true) {
-				Display.getInstance().finish();
-				}
-				else {
-				
+				if (check == true || check1 == true) {
+					Display.getInstance().finish();
+				} else {
+
 				}
 			}
 

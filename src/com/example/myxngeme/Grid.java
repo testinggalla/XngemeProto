@@ -36,7 +36,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Grid extends Activity {
 	ImageView send;
@@ -53,13 +52,11 @@ public class Grid extends Activity {
 	TextView name, phone, add;
 	ImageView profilepic, map;
 	String tvpic, tvname, tvphone;
-	Bitmap myBitmap;
-	Bitmap myBitmap1, myBitmap2;
+	Bitmap myBitmap,myBitmap1, myBitmap2;
 	ArrayList<String> mThumbIds;
 	ArrayList<String> links;
 	ArrayList<String> names;
-	ArrayList<String> sel_links;
-	ArrayList<String> sel_names;
+	ArrayList<String> sel_links,sel_names;
 	DBxngeme dbc;
 	Cursor c;
 	GridView gridView, gridView1;
@@ -86,7 +83,7 @@ public class Grid extends Activity {
 			Display.getInstance().finish();
 			}
 			else {
-			
+			//nothing
 			}
 			//finishing the current activity
 			finish();
@@ -129,6 +126,7 @@ public class Grid extends Activity {
 		new BackgroundAsyncTask().execute();
 		profilepic = (ImageView) findViewById(R.id.profile);
 		name = (TextView) findViewById(R.id.name);
+		phone = (TextView) findViewById(R.id.phone);
 		add = (TextView) findViewById(R.id.add);
 		add.setOnClickListener(new OnClickListener() {
 
@@ -143,7 +141,7 @@ public class Grid extends Activity {
 				finish();
 			}
 		});
-		phone = (TextView) findViewById(R.id.phone);
+		
 		// getting the images links and links from database table
 		dbc.open();
 		c = dbc.getAllContacts();
@@ -214,81 +212,6 @@ public class Grid extends Activity {
 		
 		progress();
 		
-//		gridView.setAdapter(new ImageAdapterForGrid1(Grid.this, w));
-//		gridView1.setAdapter(new ImageAdapterForGrid2(Grid.this, w));
-//
-//		/**
-//		 * On Click event for Single Gridview Item
-//		 * */
-//		gridView.setOnItemClickListener(new OnItemClickListener() {
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View v,
-//					int position, long id) {
-//				ImageView i = (ImageView) v;
-//				String s = links.get(position);
-//				String name = names.get(position);
-//
-//				if (i.getTag() == null) {
-//					sel_names.add(names.get(position));
-//					sel_links.add(links.get(position));
-//					tags[position] = 1;
-//					i.setAlpha(0x66);
-//					i.setTag(1);
-//				} else if (i.getTag().toString().equals("1")) {
-//					i.setTag(null);
-//					tags[position] = 0;
-//					sel_names.remove(names.get(position));
-//					sel_links.remove(links.get(position));
-//					i.setAlpha(0xff);
-//				}
-//
-//			}
-//		});
-//		gridView1.setOnItemClickListener(new OnItemClickListener() {
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View v,
-//					int position, long id) {
-//
-//				ImageView i = (ImageView) v;
-//				String s = links.get(position + 4);
-//				String name = names.get(position + 4);
-//				if (i.getTag() == null) {
-//					sel_names.add(names.get(position + 4));
-//					sel_links.add(links.get(position + 4));
-//					tags[position + 4] = 1;
-//					i.setAlpha(0x66);
-//					i.setTag(1);
-//				} else if (i.getTag().toString().equals("1")) {
-//					sel_names.remove(names.get(position + 4));
-//					sel_links.remove(links.get(position + 4));
-//					i.setTag(null);
-//					tags[position + 4] = 0;
-//					i.setAlpha(0xff);
-//				}
-//
-//			}
-//		});
-//
-//		send.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stubLog/
-//				StringBuilder sb = new StringBuilder();
-//				for (int i = 0; i < sel_links.size(); i++) {
-//					sb.append(sel_names.get(i));
-//					sb.append(":");
-//					sb.append("\n");
-//					sb.append(sel_links.get(i));
-//					sb.append("\n");
-//				}
-//				StringBuilder sel_cat = sb;
-//				String recp = email.getText().toString();
-//				sendGmail(Grid.this, "Hello from XngeMe!", "XngeMe" + "\n"
-//						+ sel_cat, recp);
-//
-//			}
-//		});
 	}
 	/*
 	 * ******************************************************************************************************************************************
@@ -363,18 +286,11 @@ public class Grid extends Activity {
 			imageView.setLayoutParams(new GridView.LayoutParams(l, l));
 			if (tags[position] == 0) {
 
-				imageView.setAlpha(0xff);
+				imageView.setImageAlpha(0xff);
 			} else {
 
-				imageView.setAlpha(0x66);
+				imageView.setImageAlpha(0x66);
 			}
-//			if(mThumbIds.size()<=4&&position==3){
-//				Log.e("Upendra", "true");
-//				dialog.dismiss();
-////				dialog.dismiss();
-//			}else{
-//				Log.e("Upendra", "false"+position);
-//			}
 			return imageView;
 		}
 
@@ -499,9 +415,9 @@ public class Grid extends Activity {
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			imageView.setLayoutParams(new GridView.LayoutParams(l, l));
 			if (tags[position + 4] == 0) {
-				imageView.setAlpha(0xff);
+				imageView.setImageAlpha(0xff);
 			} else {
-				imageView.setAlpha(0x66);
+				imageView.setImageAlpha(0x66);
 			}
 //			if(position==3){
 //				dialog.dismiss();
@@ -649,21 +565,19 @@ public class Grid extends Activity {
 					public void onItemClick(AdapterView<?> parent, View v,
 							int position, long id) {
 						ImageView i = (ImageView) v;
-						String s = links.get(position);
-						String name = names.get(position);
 
 						if (i.getTag() == null) {
 							sel_names.add(names.get(position));
 							sel_links.add(links.get(position));
 							tags[position] = 1;
-							i.setAlpha(0x66);
+							i.setImageAlpha(0x66);
 							i.setTag(1);
 						} else if (i.getTag().toString().equals("1")) {
 							i.setTag(null);
 							tags[position] = 0;
 							sel_names.remove(names.get(position));
 							sel_links.remove(links.get(position));
-							i.setAlpha(0xff);
+							i.setImageAlpha(0xff);
 						}
 
 					}
@@ -674,20 +588,18 @@ public class Grid extends Activity {
 							int position, long id) {
 
 						ImageView i = (ImageView) v;
-						String s = links.get(position + 4);
-						String name = names.get(position + 4);
 						if (i.getTag() == null) {
 							sel_names.add(names.get(position + 4));
 							sel_links.add(links.get(position + 4));
 							tags[position + 4] = 1;
-							i.setAlpha(0x66);
+							i.setImageAlpha(0x66);
 							i.setTag(1);
 						} else if (i.getTag().toString().equals("1")) {
 							sel_names.remove(names.get(position + 4));
 							sel_links.remove(links.get(position + 4));
 							i.setTag(null);
 							tags[position + 4] = 0;
-							i.setAlpha(0xff);
+							i.setImageAlpha(0xff);
 						}
 
 					}

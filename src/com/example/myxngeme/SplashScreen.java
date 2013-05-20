@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,8 +27,9 @@ public class SplashScreen extends Activity {
 	Editor e;
 	Boolean io;
 	int b;
-Boolean df=true;
-Boolean dff=true;
+	Boolean df = true;
+	Boolean dff = true;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashscr);
@@ -37,7 +37,8 @@ Boolean dff=true;
 				.getDefaultSharedPreferences(getBaseContext());
 		final boolean previouslyStarted = prefs.getBoolean(
 				getString(R.string.hello_world), false);
-df=false;dff=false;
+		df = false;
+		dff = false;
 		SharedPreferences spf = getSharedPreferences("Sample", 0);
 		SharedPreferences.Editor se = spf.edit();
 		se.putBoolean("df", df);
@@ -93,7 +94,8 @@ df=false;dff=false;
 						finish();
 						//
 					} else if (io == true) {
-						// this condition is true when the app is closed without clicking on logout button
+						// this condition is true when the app is closed without
+						// clicking on logout button
 						Intent inten = new Intent(getBaseContext(), Grid.class);
 						startActivity(inten);
 						b = 0;
