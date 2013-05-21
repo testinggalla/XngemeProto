@@ -150,9 +150,9 @@ public class Display extends Activity {
 				.getLayoutParams();
 		re.getLayoutParams().width = height / 1;
 		re.getLayoutParams().height = height / 4;
-		profilepic.getLayoutParams().width = height / 6;
-		profilepic.getLayoutParams().height = height / 6;
-		params.setMargins(wwidth / 24, wwidth / 20, wwidth / 20, wwidth / 24); // substitute
+		profilepic.getLayoutParams().width = wwidth / 4;
+		profilepic.getLayoutParams().height = wwidth /4;
+		params.setMargins(wwidth / 24, wwidth / 20, wwidth / 40, 0); // substitute
 																				// parameters
 																				// for
 																				// left,
@@ -179,12 +179,12 @@ public class Display extends Activity {
 		phone.setLayoutParams(params2);
 		RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams) country
 				.getLayoutParams();
-		params4.setMargins(wwidth / 20, 0, 0, 0); // substitute parameters for
+		params4.setMargins(wwidth / 20, 0, 0,0); // substitute parameters for
 													// left, top, right, bottom
 		phone.setLayoutParams(params2);
 		RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams) email
 				.getLayoutParams();
-		params3.setMargins(height / 6, 0, 0, 0); // substitute parameters for
+		params3.setMargins(height / 6, wwidth/45, 0, 0);// substitute parameters for
 													// left, top, right, bottom
 		email.setLayoutParams(params3);
 		list = (ListView) findViewById(R.id.list);

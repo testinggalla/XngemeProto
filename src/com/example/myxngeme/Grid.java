@@ -15,8 +15,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,6 +28,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -52,11 +55,11 @@ public class Grid extends Activity {
 	TextView name, phone, add;
 	ImageView profilepic, map;
 	String tvpic, tvname, tvphone;
-	Bitmap myBitmap,myBitmap1, myBitmap2;
+	Bitmap myBitmap, myBitmap1, myBitmap2;
 	ArrayList<String> mThumbIds;
 	ArrayList<String> links;
 	ArrayList<String> names;
-	ArrayList<String> sel_links,sel_names;
+	ArrayList<String> sel_links, sel_names;
 	DBxngeme dbc;
 	Cursor c;
 	GridView gridView, gridView1;
@@ -75,17 +78,15 @@ public class Grid extends Activity {
 			init();
 			return true;
 		case KeyEvent.KEYCODE_BACK:
-			SharedPreferences spf = getSharedPreferences(
-					"Sample", 0);
-			Boolean check=spf.getBoolean("df",false);
-			Boolean check1=spf.getBoolean("dff",false);
-			if(check==true || check1==true) {
-			Display.getInstance().finish();
+			SharedPreferences spf = getSharedPreferences("Sample", 0);
+			Boolean check = spf.getBoolean("df", false);
+			Boolean check1 = spf.getBoolean("dff", false);
+			if (check == true || check1 == true) {
+				Display.getInstance().finish();
+			} else {
+				// nothing
 			}
-			else {
-			//nothing
-			}
-			//finishing the current activity
+			// finishing the current activity
 			finish();
 			return true;
 
@@ -121,7 +122,8 @@ public class Grid extends Activity {
 		email = (EditText) findViewById(R.id.email1);
 		email.setTypeface(font);
 		mSlideoutHelper = new SlideoutHelper(this);
-		gestureDetector = new GestureDetector(getBaseContext(),new MyGestureDetector());
+		gestureDetector = new GestureDetector(getBaseContext(),
+				new MyGestureDetector());
 		View mainview = (View) findViewById(R.id.inner_content);
 		new BackgroundAsyncTask().execute();
 		profilepic = (ImageView) findViewById(R.id.profile);
@@ -141,7 +143,7 @@ public class Grid extends Activity {
 				finish();
 			}
 		});
-		
+
 		// getting the images links and links from database table
 		dbc.open();
 		c = dbc.getAllContacts();
@@ -154,7 +156,6 @@ public class Grid extends Activity {
 		}
 		c.close();
 		dbc.close();
-		
 
 		mSlideoutHelper = new SlideoutHelper(this);
 		/* for sliding */
@@ -209,22 +210,25 @@ public class Grid extends Activity {
 
 		gridView = (GridView) findViewById(R.id.gridview1);
 		gridView1 = (GridView) findViewById(R.id.gridview2);
-		
+
 		progress();
-		
+
 	}
+
 	/*
 	 * ******************************************************************************************************************************************
-	 * */
+	 */
 	private void progress() {
 		// TODO Auto-generated method stub
-		
-//		dialog = ProgressDialog.show(Grid.this, "", "Loading from server...");
-//		dialog.setCancelable(false);
+
+		// dialog = ProgressDialog.show(Grid.this, "",
+		// "Loading from server...");
+		// dialog.setCancelable(false);
 	}
+
 	/*
 	 * ******************************************************************************************************************************************
-	 * */
+	 */
 	public void sendGmail(Context activity, String subject, String text,
 			String receipient) {
 		Intent gmailIntent = new Intent();
@@ -286,10 +290,24 @@ public class Grid extends Activity {
 			imageView.setLayoutParams(new GridView.LayoutParams(l, l));
 			if (tags[position] == 0) {
 
-				imageView.setImageAlpha(0xff);
-			} else {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+					Log.v("4.2", "");
+					imageView.setImageAlpha(0xff);
+				}
 
-				imageView.setImageAlpha(0x66);
+				else {
+					Log.v("2.2", "");
+					imageView.setAlpha(0xff);
+				}
+
+			} else {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+					imageView.setImageAlpha(0x66);
+				}
+
+				else {
+					imageView.setAlpha(0x66);
+				}
 			}
 			return imageView;
 		}
@@ -339,25 +357,48 @@ public class Grid extends Activity {
 			super.onPostExecute(result);
 
 			image.setImageBitmap(bmp);
-			 if (mThumbIds.size() < 4) {
-					if (mThumbIds.size() == 1){
-						if (pos == 0) {
-							dialog.dismiss();
-						}
-					}else{
-						if(pos==1){
-							dialog.dismiss();
-						}
-					}
-				} else {
-					if (pos == 3) {
+			Log.v("pos frm grid1","");
+			// Log.v("size",""+mThumbIds.size());
+			if (mThumbIds.size() <= 4) {
+
+				if (mThumbIds.size() == 1) {
+					if (pos == 0) {
+						Log.v("0", "");
 						dialog.dismiss();
 					}
-				}
-//			if(pos==3){
+				} else if (pos == 1) {
+					Log.v("1", "");
+					dialog.dismiss();
+				} else if (pos == 2) {
+					Log.v("2", "");
+					dialog.dismiss();
+
+				}else if (pos == 3) {
+					Log.v("3", "");
+					dialog.dismiss();
+					
+				}}
+//			}else if (mThumbIds.size() > 4){
 //				dialog.dismiss();
 //			}
+//			} else 
+//				if (pos == 3) {
+//					Log.v("3", "");
+//					dialog.dismiss();
+//					
+//				}
+//				else if(mThumbIds.size() >= 4){
+//					Log.v("dio","start");
+//					dialog = ProgressDialog.show(Grid.this, "",
+//							"Loading from server3...");
+//					dialog.setCancelable(false);
+//				}
+//			
 			
+			// if(pos==3){
+			// dialog.dismiss();
+			// }
+
 			// progressdialog.dismiss();
 		}
 
@@ -415,13 +456,29 @@ public class Grid extends Activity {
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			imageView.setLayoutParams(new GridView.LayoutParams(l, l));
 			if (tags[position + 4] == 0) {
-				imageView.setImageAlpha(0xff);
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+					Log.v("4.2", "");
+					imageView.setImageAlpha(0xff);
+				}
+
+				else {
+					Log.v("2.2", "");
+					imageView.setAlpha(0xff);
+				}
+
 			} else {
-				imageView.setImageAlpha(0x66);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+					imageView.setImageAlpha(0x66);
+				}
+
+				else {
+					imageView.setAlpha(0x66);
+				}
 			}
-//			if(position==3){
-//				dialog.dismiss();
-//			}
+			// if(position==3){
+			// dialog.dismiss();
+			// }
 			return imageView;
 		}
 
@@ -473,6 +530,40 @@ public class Grid extends Activity {
 			// dialog.dismiss();
 
 			super.onPostExecute(result);
+//			Log.v("pos frm grid2",""+pos);
+			
+			if (mThumbIds.size() > 4) {
+//				Log.v("pos1",""+pos+4);
+				int pos1=pos+4;
+				Log.v("pos1",""+pos1);
+				if(pos1==mThumbIds.size()-1) {
+//					Log.v(">","5");
+					dialog.dismiss();
+				}
+			}
+			
+			
+			
+//				if (mThumbIds.size() == 1) {
+//					if (pos == 0) {
+//						Log.v("0", "");
+//						dialog.dismiss();
+//					}
+//				} else if (pos == 1) {
+//					Log.v("1", "");
+//					dialog.dismiss();
+//				} else if (pos == 2) {
+//					Log.v("2", "");
+//					dialog.dismiss();
+//
+//				}
+//
+//			} else {
+//				if (pos == 3) {
+//					Log.v("3", "");
+//					dialog.dismiss();
+//				}
+//			}
 
 		}
 
@@ -485,7 +576,7 @@ public class Grid extends Activity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-
+			
 			//
 
 		}
@@ -493,16 +584,13 @@ public class Grid extends Activity {
 
 	/* for sliding */
 	public void init() {
-		int width = (int) TypedValue.applyDimension(
-				TypedValue.COMPLEX_UNIT_PX,(w-(w/3)), getResources()
-						.getDisplayMetrics());
-		Log.v("ww2"," "+(w-(w/3)));
-		Log.v("ww"," "+(w-(w-(w/4))-(3*(w/8))));
+		int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,
+				(w - (w / 3)), getResources().getDisplayMetrics());
+		Log.v("ww2", " " + (w - (w / 3)));
+		Log.v("ww", " " + (w - (w - (w / 4)) - (3 * (w / 8))));
 		SlideoutActivity.prepare(Grid.this, R.id.inner_content, width);
 		startActivity(new Intent(Grid.this, MenuActivity.class));
 		overridePendingTransition(0, 0);
-
-
 
 	}
 
@@ -551,82 +639,119 @@ public class Grid extends Activity {
 			name.setText(tvname);
 			phone.setText(tvphone);
 			profilepic.setImageBitmap(myBitmap);
-			 dialog.dismiss();
-			 dialog = ProgressDialog.show(Grid.this, "", "Loading from server...");
-				dialog.setCancelable(false);
-				gridView.setAdapter(new ImageAdapterForGrid1(Grid.this, w));
-				gridView1.setAdapter(new ImageAdapterForGrid2(Grid.this, w));
+			dialog.dismiss();
+			dialog = ProgressDialog.show(Grid.this, "",
+					"Loading from server...");
+			dialog.setCancelable(false);
+			gridView.setAdapter(new ImageAdapterForGrid1(Grid.this, w));
+			gridView1.setAdapter(new ImageAdapterForGrid2(Grid.this, w));
 
-				/**
-				 * On Click event for Single Gridview Item
-				 * */
-				gridView.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View v,
-							int position, long id) {
-						ImageView i = (ImageView) v;
+			/**
+			 * On Click event for Single Gridview Item
+			 * */
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View v,
+						int position, long id) {
+					ImageView i = (ImageView) v;
 
-						if (i.getTag() == null) {
-							sel_names.add(names.get(position));
-							sel_links.add(links.get(position));
-							tags[position] = 1;
+					if (i.getTag() == null) {
+						sel_names.add(names.get(position));
+						sel_links.add(links.get(position));
+						tags[position] = 1;
+
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+							Log.v("4.2", "");
 							i.setImageAlpha(0x66);
-							i.setTag(1);
-						} else if (i.getTag().toString().equals("1")) {
-							i.setTag(null);
-							tags[position] = 0;
-							sel_names.remove(names.get(position));
-							sel_links.remove(links.get(position));
+						}
+
+						else {
+							Log.v("2.2", "");
+							i.setAlpha(0x66);
+						}
+
+						i.setTag(1);
+					} else if (i.getTag().toString().equals("1")) {
+						i.setTag(null);
+						tags[position] = 0;
+						sel_names.remove(names.get(position));
+						sel_links.remove(links.get(position));
+
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+							Log.v("4.2", "");
 							i.setImageAlpha(0xff);
 						}
 
+						else {
+							Log.v("2.2", "");
+							i.setAlpha(0xff);
+						}
 					}
-				});
-				gridView1.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View v,
-							int position, long id) {
 
-						ImageView i = (ImageView) v;
-						if (i.getTag() == null) {
-							sel_names.add(names.get(position + 4));
-							sel_links.add(links.get(position + 4));
-							tags[position + 4] = 1;
+				}
+			});
+			gridView1.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View v,
+						int position, long id) {
+
+					ImageView i = (ImageView) v;
+					if (i.getTag() == null) {
+						sel_names.add(names.get(position + 4));
+						sel_links.add(links.get(position + 4));
+						tags[position + 4] = 1;
+
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+							Log.v("4.2", "");
 							i.setImageAlpha(0x66);
-							i.setTag(1);
-						} else if (i.getTag().toString().equals("1")) {
-							sel_names.remove(names.get(position + 4));
-							sel_links.remove(links.get(position + 4));
-							i.setTag(null);
-							tags[position + 4] = 0;
+						}
+
+						else {
+							Log.v("2.2", "");
+							i.setAlpha(0x66);
+						}
+						i.setTag(1);
+					} else if (i.getTag().toString().equals("1")) {
+						sel_names.remove(names.get(position + 4));
+						sel_links.remove(links.get(position + 4));
+						i.setTag(null);
+						tags[position + 4] = 0;
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+							Log.v("4.2", "");
 							i.setImageAlpha(0xff);
 						}
 
-					}
-				});
-
-				send.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stubLog/
-						StringBuilder sb = new StringBuilder();
-						for (int i = 0; i < sel_links.size(); i++) {
-							sb.append(sel_names.get(i));
-							sb.append(":");
-							sb.append("\n");
-							sb.append(sel_links.get(i));
-							sb.append("\n");
+						else {
+							Log.v("2.2", "");
+							i.setAlpha(0xff);
 						}
-						StringBuilder sel_cat = sb;
-						String recp = email.getText().toString();
-						sendGmail(Grid.this, "Hello from XngeMe!", "XngeMe" + "\n"
-								+ sel_cat, recp);
-
 					}
-				});
-		
-			//new setGrids().execute();
+
+				}
+			});
+
+			send.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stubLog/
+					StringBuilder sb = new StringBuilder();
+					for (int i = 0; i < sel_links.size(); i++) {
+						sb.append(sel_names.get(i));
+						sb.append(":");
+						sb.append("\n");
+						sb.append(sel_links.get(i));
+						sb.append("\n");
+					}
+					StringBuilder sel_cat = sb;
+					String recp = email.getText().toString();
+					sendGmail(Grid.this, "Hello from XngeMe!", "XngeMe" + "\n"
+							+ sel_cat, recp);
+
+				}
+			});
+
+			// new setGrids().execute();
 
 		}
 
@@ -640,7 +765,8 @@ public class Grid extends Activity {
 			// TODO Auto-generated method stub
 
 			super.onPreExecute();
-			dialog = ProgressDialog.show(Grid.this, "", "Loading Profile picture...");
+			dialog = ProgressDialog.show(Grid.this, "",
+					"Loading Profile picture...");
 			dialog.setCancelable(false);
 		}
 	}
