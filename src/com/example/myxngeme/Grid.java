@@ -15,20 +15,17 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -52,8 +49,9 @@ public class Grid extends Activity {
 	boolean done = false;
 	static Grid activityA;
 	private SlideoutHelper mSlideoutHelper;
-	TextView name, phone, add;
-	ImageView profilepic, map;
+	TextView name, phone;
+
+	ImageView profilepic, map, add;
 	String tvpic, tvname, tvphone;
 	Bitmap myBitmap, myBitmap1, myBitmap2;
 	ArrayList<String> mThumbIds;
@@ -129,7 +127,7 @@ public class Grid extends Activity {
 		profilepic = (ImageView) findViewById(R.id.profile);
 		name = (TextView) findViewById(R.id.name);
 		phone = (TextView) findViewById(R.id.phone);
-		add = (TextView) findViewById(R.id.add);
+		add = (ImageView) findViewById(R.id.add);
 		add.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -196,9 +194,8 @@ public class Grid extends Activity {
 		l.setLayoutParams(params);
 		l2.setLayoutParams(params1);
 
-		TextView add = (TextView) findViewById(R.id.add);
-		add.setHeight(w / 8);
-		add.setWidth(w / 8);
+		add.getLayoutParams().width = w / 8;
+		add.getLayoutParams().height = w / 8;
 
 		ImageView map1 = (ImageView) findViewById(R.id.map);
 		map1.getLayoutParams().width = w / 8;
@@ -207,6 +204,30 @@ public class Grid extends Activity {
 		ImageView prof = (ImageView) findViewById(R.id.profile);
 		prof.getLayoutParams().width = w / 4;
 		prof.getLayoutParams().height = w / 4;
+
+		RelativeLayout.LayoutParams param = (RelativeLayout.LayoutParams) name
+				.getLayoutParams();
+		param.setMargins(w / 50, w / 40, 0, 0); // substitute
+
+		// parameters
+		// for
+		// left,
+		// top,
+		// right,
+		// bottom
+		name.setLayoutParams(param);
+		RelativeLayout.LayoutParams param1 = (RelativeLayout.LayoutParams) add
+				.getLayoutParams();
+
+		add.setPadding(w / 30, w / 30, w / 30, w / 30);
+		add.setLayoutParams(param1);
+		RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) phone
+				.getLayoutParams();
+		params2.setMargins(0, 0, 0, w / 50); // substitute
+												// parameters for
+												// left, top, right,
+												// bottom
+		phone.setLayoutParams(params2);
 
 		gridView = (GridView) findViewById(R.id.gridview1);
 		gridView1 = (GridView) findViewById(R.id.gridview2);
@@ -291,12 +312,10 @@ public class Grid extends Activity {
 			if (tags[position] == 0) {
 
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-					Log.v("4.2", "");
 					imageView.setImageAlpha(0xff);
 				}
 
 				else {
-					Log.v("2.2", "");
 					imageView.setAlpha(0xff);
 				}
 
@@ -334,6 +353,7 @@ public class Grid extends Activity {
 			// TODO Auto-generated method stub
 			try {
 				URL url = new URL(mThumbIds.get(pos));
+
 				HttpURLConnection connection = (HttpURLConnection) url
 						.openConnection();
 				connection.setDoInput(true);
@@ -357,49 +377,27 @@ public class Grid extends Activity {
 			super.onPostExecute(result);
 
 			image.setImageBitmap(bmp);
-			Log.v("pos frm grid1","");
-			// Log.v("size",""+mThumbIds.size());
 			if (mThumbIds.size() <= 4) {
 
 				if (mThumbIds.size() == 1) {
 					if (pos == 0) {
-						Log.v("0", "");
 						dialog.dismiss();
 					}
-				} else if (pos == 1) {
-					Log.v("1", "");
-					dialog.dismiss();
-				} else if (pos == 2) {
-					Log.v("2", "");
-					dialog.dismiss();
+				} else if (mThumbIds.size() == 2) {
+					if (pos == 1) {
+						dialog.dismiss();
+					}
+				} else if (mThumbIds.size() == 3) {
+					if (pos == 2) {
+						dialog.dismiss();
+					}
+				} else if (mThumbIds.size() == 4) {
+					if (pos == 3) {
+						dialog.dismiss();
+					}
+				}
 
-				}else if (pos == 3) {
-					Log.v("3", "");
-					dialog.dismiss();
-					
-				}}
-//			}else if (mThumbIds.size() > 4){
-//				dialog.dismiss();
-//			}
-//			} else 
-//				if (pos == 3) {
-//					Log.v("3", "");
-//					dialog.dismiss();
-//					
-//				}
-//				else if(mThumbIds.size() >= 4){
-//					Log.v("dio","start");
-//					dialog = ProgressDialog.show(Grid.this, "",
-//							"Loading from server3...");
-//					dialog.setCancelable(false);
-//				}
-//			
-			
-			// if(pos==3){
-			// dialog.dismiss();
-			// }
-
-			// progressdialog.dismiss();
+			}
 		}
 
 		/*
@@ -411,11 +409,6 @@ public class Grid extends Activity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			// progressdialog = new ProgressDialog(Grid.this);
-			// progressdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			// progressdialog.setMessage("Loading...");
-			// progressdialog.setCancelable(true);
-			// progressdialog.show();
 		}
 	}
 
@@ -458,12 +451,10 @@ public class Grid extends Activity {
 			if (tags[position + 4] == 0) {
 
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-					Log.v("4.2", "");
 					imageView.setImageAlpha(0xff);
 				}
 
 				else {
-					Log.v("2.2", "");
 					imageView.setAlpha(0xff);
 				}
 
@@ -476,9 +467,7 @@ public class Grid extends Activity {
 					imageView.setAlpha(0x66);
 				}
 			}
-			// if(position==3){
-			// dialog.dismiss();
-			// }
+
 			return imageView;
 		}
 
@@ -530,40 +519,13 @@ public class Grid extends Activity {
 			// dialog.dismiss();
 
 			super.onPostExecute(result);
-//			Log.v("pos frm grid2",""+pos);
-			
 			if (mThumbIds.size() > 4) {
-//				Log.v("pos1",""+pos+4);
-				int pos1=pos+4;
-				Log.v("pos1",""+pos1);
-				if(pos1==mThumbIds.size()-1) {
-//					Log.v(">","5");
+				int pos1 = pos + 4;
+				if (pos1 == mThumbIds.size() - 1) {
+
 					dialog.dismiss();
 				}
 			}
-			
-			
-			
-//				if (mThumbIds.size() == 1) {
-//					if (pos == 0) {
-//						Log.v("0", "");
-//						dialog.dismiss();
-//					}
-//				} else if (pos == 1) {
-//					Log.v("1", "");
-//					dialog.dismiss();
-//				} else if (pos == 2) {
-//					Log.v("2", "");
-//					dialog.dismiss();
-//
-//				}
-//
-//			} else {
-//				if (pos == 3) {
-//					Log.v("3", "");
-//					dialog.dismiss();
-//				}
-//			}
 
 		}
 
@@ -576,7 +538,7 @@ public class Grid extends Activity {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			
+
 			//
 
 		}
@@ -586,8 +548,6 @@ public class Grid extends Activity {
 	public void init() {
 		int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,
 				(w - (w / 3)), getResources().getDisplayMetrics());
-		Log.v("ww2", " " + (w - (w / 3)));
-		Log.v("ww", " " + (w - (w - (w / 4)) - (3 * (w / 8))));
 		SlideoutActivity.prepare(Grid.this, R.id.inner_content, width);
 		startActivity(new Intent(Grid.this, MenuActivity.class));
 		overridePendingTransition(0, 0);
@@ -661,12 +621,10 @@ public class Grid extends Activity {
 						tags[position] = 1;
 
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-							Log.v("4.2", "");
 							i.setImageAlpha(0x66);
 						}
 
 						else {
-							Log.v("2.2", "");
 							i.setAlpha(0x66);
 						}
 
@@ -678,12 +636,10 @@ public class Grid extends Activity {
 						sel_links.remove(links.get(position));
 
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-							Log.v("4.2", "");
 							i.setImageAlpha(0xff);
 						}
 
 						else {
-							Log.v("2.2", "");
 							i.setAlpha(0xff);
 						}
 					}
@@ -702,12 +658,10 @@ public class Grid extends Activity {
 						tags[position + 4] = 1;
 
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-							Log.v("4.2", "");
 							i.setImageAlpha(0x66);
 						}
 
 						else {
-							Log.v("2.2", "");
 							i.setAlpha(0x66);
 						}
 						i.setTag(1);
@@ -717,12 +671,10 @@ public class Grid extends Activity {
 						i.setTag(null);
 						tags[position + 4] = 0;
 						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-							Log.v("4.2", "");
 							i.setImageAlpha(0xff);
 						}
 
 						else {
-							Log.v("2.2", "");
 							i.setAlpha(0xff);
 						}
 					}

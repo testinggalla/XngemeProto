@@ -220,6 +220,8 @@ public class Display extends Activity {
 							});
 
 					alert.show();
+					c.close();
+					dbc.close();
 				} else {
 					Intent in = new Intent(getBaseContext(), Grid.class);
 					startActivity(in);
